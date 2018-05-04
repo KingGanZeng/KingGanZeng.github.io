@@ -199,17 +199,112 @@
 
             
             <section id="main">
-    <article id="post-你好Typora" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-node.js传统读写流的时间先后问题" class="article article-type-post" itemscope itemprop="blogPost">
     <div class="article-inner">
         
+        
+            <header class="article-header">
+                
+    
+        <h1 itemprop="name">
+            <a class="article-title" href="/node.js传统读写流的时间先后问题/">node.js非管道方法读写错误问题</a>
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/node.js传统读写流的时间先后问题/">
+            <time datetime="2018-05-04T06:09:17.293Z" itemprop="datePublished">2018-05-04</time>
+        </a>
+    </div>
+
+
+                        
+                        
+                    </div>
+                
+            </header>
         
         
         <div class="article-entry" itemprop="articleBody">
         
             
-            <p>你好</p>
-<p>这是我第一次使用typora</p>
-<p>试一试真很棒！</p>
+            <p>今天在学习node.js流的时候，参照菜鸟教程的文档写了从流中读取和写入数据的操作，但是在两者同时运行的时候，却发现写入文档并没有任何数据写入。</p>
+<p>先上最初的错误代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//引入流模块</span></span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">var</span> data = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> readerStream = fs.createReadStream(<span class="string">'input.txt'</span>);</span><br><span class="line"><span class="keyword">var</span> writerStream = fs.createWriteStream(<span class="string">'output.txt'</span>); </span><br><span class="line"></span><br><span class="line"><span class="comment">//将文档从input.txt中读取出来存入流</span></span><br><span class="line">readerStream.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">chunk</span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"1、Start:"</span>);</span><br><span class="line">	data += chunk;</span><br><span class="line">&#125;);</span><br><span class="line">readerStream.on(<span class="string">'end'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"2、"</span> + data);</span><br><span class="line">&#125;);</span><br><span class="line">readerStream.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err.stack);</span><br><span class="line">&#125;)；</span><br><span class="line"></span><br><span class="line"><span class="comment">//从流中读取数据写入output.txt</span></span><br><span class="line">writerStream.write(data, <span class="string">'UTF8'</span>);</span><br><span class="line">writerStream.end();</span><br><span class="line">writerStream.on(<span class="string">'finish'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"3、Write done!"</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"4、All done!"</span>);</span><br><span class="line">&#125;);</span><br><span class="line">writerStream.on(<span class="string">'err'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err.stack);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"5、Program Finished！"</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+<p>程序的运行结果如下：</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">5、Program Finished!</span><br><span class="line">1、Start:</span><br><span class="line">3、Write done!</span><br><span class="line">4、All done!</span><br><span class="line">2、Hello world!</span><br></pre></td></tr></table></figure>
+<p>这时去查看同目录下生成的output.txt是没有内容的，根据以上代码，显然在进行写入操作时，data变量还没有数据读入，因此output写入数据为空（你也可以尝试定义data为一个字符串进行测试）。</p>
+<p>接下来对写入流（writerStream）设定一个定时器，1秒后进行操作，修改代码为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    writerStream.write(data, <span class="string">'UTF8'</span>);</span><br><span class="line">&#125;,<span class="number">1000</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    writeStream.end();</span><br><span class="line">&#125;,<span class="number">2000</span>)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>这里需要注意，在对写操作设置定时器的时候，需要对end方法也设定定时器，并且时间需要大于我们写操作定时器的时间，不然会出现以下错误：</p>
+<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error: write after end</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>最终调试到以下阶段：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    writerStream.write(data, <span class="string">'UTF8'</span>);</span><br><span class="line">&#125;,<span class="number">3</span>);</span><br><span class="line"><span class="comment">//定时为2则抛出'Error: write after end'</span></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    writeStream.end();</span><br><span class="line">&#125;,<span class="number">5</span>)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>可以看到从文件中读取数据至少要3ms（实际的读取时间跟文件路径以及大小有关），而程序读取完只需要不到1ms，所以才出现了最开始写入数据为空的bug。这也侧面说明了node.js的异步处理方式。</p>
+<p>当然，其实node.js已经帮我们做好了这一堆繁杂的操作，管道流（pipe）很好的解决了这一个问题，我们的代码可以简化为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> readerStream = fs.createReadStream(<span class="string">'input.txt'</span>);</span><br><span class="line"><span class="keyword">var</span> writeeStream = fs.createWriteStream(<span class="string">'output.txt'</span>);</span><br><span class="line"></span><br><span class="line">readerStream.pipe(writeStream);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"All done!"</span>);</span><br></pre></td></tr></table></figure>
+<p>上述的操作会使得output.txt内容被覆写，如果你只想在output.txt中追加内容，可以在定义写入流的时候追加参数:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> writeeStream = fs.createWriteStream(<span class="string">'output.txt'</span>,&#123;<span class="string">'flags'</span> : <span class="string">'a'</span> &#125;);</span><br></pre></td></tr></table></figure>
+<p>可用的参数列表如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">flag</th>
+<th style="text-align:left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">r</td>
+<td style="text-align:left">读取文件。如果文件不存在则抛出异常</td>
+</tr>
+<tr>
+<td style="text-align:left">r+</td>
+<td style="text-align:left">读取并写入。如果文件不存在时抛出异常</td>
+</tr>
+<tr>
+<td style="text-align:left">rs</td>
+<td style="text-align:left">以同步方式读取文件并通知操作系统忽略本地文件系统缓存</td>
+</tr>
+<tr>
+<td style="text-align:left">w</td>
+<td style="text-align:left">写入文件。文件不存在则创建该文件，存在则清空文件内容</td>
+</tr>
+<tr>
+<td style="text-align:left">w+</td>
+<td style="text-align:left">读取并写入文件。文件不存在则创建该文件，存在则清空文件内容</td>
+</tr>
+<tr>
+<td style="text-align:left">wx</td>
+<td style="text-align:left">作用与”w”类似。但以排他方式打开文件</td>
+</tr>
+<tr>
+<td style="text-align:left">wx+</td>
+<td style="text-align:left">作用与”w+”类似。但以排他方式打开文件</td>
+</tr>
+<tr>
+<td style="text-align:left">a</td>
+<td style="text-align:left">以追加方式写入文件。如果文件不存在则创建该文件</td>
+</tr>
+<tr>
+<td style="text-align:left">a+</td>
+<td style="text-align:left">读取并以追加方式写入文件。如果文件不存在则创建该文件</td>
+</tr>
+<tr>
+<td style="text-align:left">ax</td>
+<td style="text-align:left">作用与”a”相似。但以排他方式打开文件</td>
+</tr>
+<tr>
+<td style="text-align:left">ax+</td>
+<td style="text-align:left">作用与”a+”相似。但以排他方式打开文件</td>
+</tr>
+</tbody>
+</table>
 
         
         </div>
@@ -220,7 +315,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/你好Typora/" data-id="cjgmjhz4e00024ezzldva5xua" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/node.js传统读写流的时间先后问题/" data-id="cjgrmvrip00014szz4uosa5wj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -340,7 +435,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/test/" data-id="cjgmjhz4b00014ezzrk8yy77k" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/test/" data-id="cjgrmvris00024szzy9tfiubf" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -468,7 +563,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/hello-world/" data-id="cjgmjhz4500004ezzws7g9bjd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/hello-world/" data-id="cjgrmvrik00004szz19sqz9sj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -557,7 +652,7 @@
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/你好Typora/" class="thumbnail">
+                            <a href="/node.js传统读写流的时间先后问题/" class="thumbnail">
     
     
         <span class="thumbnail-image thumbnail-none"></span>
@@ -568,8 +663,8 @@
                         
                         <div class="item-inner">
                             <p class="item-category"></p>
-                            <p class="item-title"><a href="/你好Typora/" class="title"></a></p>
-                            <p class="item-date"><time datetime="2018-04-29T09:07:17.006Z" itemprop="datePublished">2018-04-29</time></p>
+                            <p class="item-title"><a href="/node.js传统读写流的时间先后问题/" class="title">node.js非管道方法读写错误问题</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T06:09:17.293Z" itemprop="datePublished">2018-05-04</time></p>
                         </div>
                     </li>
                 
@@ -622,7 +717,7 @@
     <div class="widget-wrap">
         <h3 class="widget-title">archives</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">2</span></li></ul>
         </div>
     </div>
 
