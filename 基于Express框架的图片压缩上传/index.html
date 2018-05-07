@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>基于Express框架的图片压缩上传 | KingGanZeng`s blogs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="在网上查看了很多技术文档，也阅读了Express官方的技术文档，很多在运行上都多少会有一些问题，所以决定今天把程序从创建到运行完整的记录下来，方便参考。其中第三部分使用了canvas的图片压缩，如果你只需要压缩部分的代码说明，可以直接跳至第三部分。 一、运行环境及基本配置说明：​    phpstorm    2018.1版本 ​    nodejs        8.11.1版本 ​    Ex">
+<meta name="keywords" content="Nodejs学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基于Express框架的图片压缩上传">
+<meta property="og:url" content="http://yoursite.com/基于Express框架的图片压缩上传/index.html">
+<meta property="og:site_name" content="KingGanZeng`s blogs">
+<meta property="og:description" content="在网上查看了很多技术文档，也阅读了Express官方的技术文档，很多在运行上都多少会有一些问题，所以决定今天把程序从创建到运行完整的记录下来，方便参考。其中第三部分使用了canvas的图片压缩，如果你只需要压缩部分的代码说明，可以直接跳至第三部分。 一、运行环境及基本配置说明：​    phpstorm    2018.1版本 ​    nodejs        8.11.1版本 ​    Ex">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/1.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/2.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/3.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/4.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/5.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/6.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/7.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/8.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/9.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/10.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/11.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/12.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/13.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/14.png">
+<meta property="og:image" content="http://yoursite.com/基于Express框架的图片压缩上传/15.png">
+<meta property="og:updated_time" content="2018-05-07T11:21:15.327Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基于Express框架的图片压缩上传">
+<meta name="twitter:description" content="在网上查看了很多技术文档，也阅读了Express官方的技术文档，很多在运行上都多少会有一些问题，所以决定今天把程序从创建到运行完整的记录下来，方便参考。其中第三部分使用了canvas的图片压缩，如果你只需要压缩部分的代码说明，可以直接跳至第三部分。 一、运行环境及基本配置说明：​    phpstorm    2018.1版本 ​    nodejs        8.11.1版本 ​    Ex">
+<meta name="twitter:image" content="http://yoursite.com/基于Express框架的图片压缩上传/1.png">
+    
+
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">KingGanZeng`s blogs</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">主页</a>
+                
+                    <a class="main-nav-link" href="/archives">时间线</a>
+                
+                    <a class="main-nav-link" href="/categories">分类</a>
+                
+                    <a class="main-nav-link" href="/tags">标签</a>
+                
+                    <a class="main-nav-link" href="/about">关于</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/avatar.jpg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+        <button type="submit" class="search-form-submit"></button>
+    </form>
+    <div class="ins-search">
+    <div class="ins-search-mask"></div>
+    <div class="ins-search-container">
+        <div class="ins-input-wrapper">
+            <input type="text" class="ins-search-input" placeholder="Type something..." />
+            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: 'Posts',
+            PAGES: 'Pages',
+            CATEGORIES: 'Categories',
+            TAGS: 'Tags',
+            UNTITLED: '(Untitled)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">时间线</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">关于</a></td>
+                
+                <td>
+                    
+    <div class="search-form">
+        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
+    </div>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile" class="profile-fixed">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/avatar.jpg" />
+            <h2 id="name">Knight Zeng</h2>
+            <h3 id="title">大三老狗 &amp; Web前端开发</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>上海, 中国</span>
+            <a id="follow" target="_blank" href="https://github.com/KingGanZeng">订阅</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                2
+                <span>提交</span>
+            </div>
+            <div class="article-info-block">
+                1
+                <span>标签</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/KingGanZeng" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="https://weibo.com/u/2852938435?refer_flag=1001030001_&nick=Knight-Zeng" target="_blank" title="weibo" class=tooltip>
+                            <i class="fa fa-weibo"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="weixin" class=tooltip>
+                            <i class="fa fa-weixin"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="qq" class=tooltip>
+                            <i class="fa fa-qq"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-基于Express框架的图片压缩上传" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            基于Express框架的图片压缩上传
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/基于Express框架的图片压缩上传/">
+            <time datetime="2018-05-07T05:11:15.238Z" itemprop="datePublished">2018-05-07</time>
+        </a>
+    </div>
+
+
+                        
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Nodejs学习/">Nodejs学习</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>在网上查看了很多技术文档，也阅读了Express官方的技术文档，很多在运行上都多少会有一些问题，所以决定今天把程序从创建到运行完整的记录下来，方便参考。其中第三部分使用了canvas的图片压缩，如果你只需要压缩部分的代码说明，可以直接跳至第三部分。</p>
+<h4 id="一、运行环境及基本配置说明："><a href="#一、运行环境及基本配置说明：" class="headerlink" title="一、运行环境及基本配置说明："></a>一、运行环境及基本配置说明：</h4><p>​    phpstorm    2018.1版本</p>
+<p>​    nodejs        8.11.1版本</p>
+<p>​    Express        4.16.0版本</p>
+<a id="more"></a>
+<h4 id="二、项目创建及框架的搭建"><a href="#二、项目创建及框架的搭建" class="headerlink" title="二、项目创建及框架的搭建"></a>二、项目创建及框架的搭建</h4><p>​    首先我们运行phpstorm，并create new project：</p>
+<p><img src="/基于Express框架的图片压缩上传/1.png" alt=""></p>
+<p>因为我是初学者，对于node的模板部署还不是很熟悉，所以这里用了静态的html（其实后来都把css和js写在html文档里了，所以这一部分默认属性也不会产生影响）</p>
+<p>项目创建好之后，我们主要对下面三个文件：index.html、app.js以及package.json进行操作：</p>
+<p><img src="/基于Express框架的图片压缩上传/2.png" alt=""></p>
+<p>因为上传文件我们需要用到express的multer中间件，所以这里也要先配置好（默认是没有的），打开命令行，进入项目的目录中：</p>
+<p><img src="/基于Express框架的图片压缩上传/3.png" alt=""></p>
+<p>然后输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install express multer --save</span><br></pre></td></tr></table></figure>
+<p>等待完成：</p>
+<p><img src="/基于Express框架的图片压缩上传/4.png" alt=""></p>
+<p>这时我们再去查看项目的package.json文件，可以看到我们的中间件已经添加成功：</p>
+<p><img src="/基于Express框架的图片压缩上传/5.png" alt=""></p>
+<p>基本配置已经完成，接下来就是代码上场。</p>
+<h4 id="三、图片压缩模块："><a href="#三、图片压缩模块：" class="headerlink" title="三、图片压缩模块："></a>三、图片压缩模块：</h4><p>这一部分不牵扯express框架或者nodejs，为纯html和js的canvas图片压缩，如果你只需要做这一部分的话，可以单独使用，无需前两部分的操作。</p>
+<p>canvas进行图片压缩的原理简单来说，就是将原来的图片转为base64格式的代码，然后重新绘制在画布上。其实也可以理解为将一幅巨大的壁画，重新copy在一张小的画布上，并删除一些细节的过程。</p>
+<p>那么先上我们的html代码，这里我把css也写进去了（虽然说并没有用什么样式）：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">title</span>&gt;</span>photo——compress<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">"stylesheet"</span> <span class="attr">href</span>=<span class="string">"/stylesheets/style.css"</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></span><br><span class="line"><span class="undefined">    #modify_img&#123;</span></span><br><span class="line"><span class="undefined">      display: block;</span></span><br><span class="line"><span class="undefined">      width: 300px;</span></span><br><span class="line"><span class="undefined">      height: 300px;</span></span><br><span class="line"><span class="undefined">      background-size: 100% 100%;</span></span><br><span class="line"><span class="undefined">    &#125;</span></span><br><span class="line"><span class="undefined">  </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"img_post"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">"images"</span> <span class="attr">alt</span>=<span class="string">""</span> <span class="attr">id</span>=<span class="string">"modify_img"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">id</span>=<span class="string">"file"</span> <span class="attr">type</span>=<span class="string">"file"</span> <span class="attr">accept</span>=<span class="string">"image/*"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">"upload"</span>&gt;</span>上传<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">"progress"</span>&gt;</span>0%<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>下面来逐一说明，div里面的标签：</p>
+<p>“img”：必要，主要是为canvas画布固定一个位置，它必须设置为block显示，            同时设置宽高，其中的background-size属性是防止图片本来就很小而无法完全占满整个框造成显示错误的情况。</p>
+<p>“input”：必要，设置id和input属性，同时只允许选择图片类型文件，在点击选择完文件后，会自动在”img”中生成压缩好的图片。</p>
+<p>“button”：必要（如果不需要上传功能可忽略），点击按钮可以将压缩好的图片上传至express服务器，同时控制台会返回相关信息。</p>
+<p>“span”：不必要，主要是为了显示上传进度。</p>
+<p>接下来是canvas绘图的代码，因为写的时候已经注释好了，后面就不再逐一赘述：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> getfile = <span class="built_in">document</span>.querySelector(<span class="string">'#file'</span>);  <span class="comment">//获取文件中id为file的元素</span></span><br><span class="line">      <span class="keyword">var</span> reader  = <span class="keyword">new</span> FileReader();                 <span class="comment">//FileReader对象允许WEB应用程序异步读取存储在用户计算机上的文件</span></span><br><span class="line">      <span class="keyword">var</span> img     = <span class="keyword">new</span> Image();                      <span class="comment">//Image功能等价于 document.createElement('img')</span></span><br><span class="line">      <span class="keyword">var</span> file    = <span class="literal">null</span>;</span><br><span class="line">      <span class="keyword">var</span> canvas  = <span class="built_in">document</span>.createElement(<span class="string">'canvas'</span>);</span><br><span class="line">      <span class="keyword">var</span> context = canvas.getContext(<span class="string">'2d'</span>);          <span class="comment">//返回一个用于在画布上绘图的环境，目前唯一合法值为“2d”</span></span><br><span class="line">      <span class="keyword">var</span> newUrl  = <span class="literal">null</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//对input绑定事件监听，当内容改变时触发</span></span><br><span class="line">      getfile.addEventListener(<span class="string">'change'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">          file = event.target.files[<span class="number">0</span>];</span><br><span class="line">          <span class="keyword">if</span> ( file.type.indexOf(<span class="string">"image"</span>) == <span class="number">0</span> )&#123;</span><br><span class="line">              reader.readAsDataURL(file);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;)；</span><br><span class="line"></span><br><span class="line">	  reader.onload = <span class="function"><span class="keyword">function</span>(<span class="params">e</span>)</span>&#123;				  	 <span class="comment">//当文件上传完后触发，主要是为了获取源文件的长宽</span></span><br><span class="line">          img.src = e.target.result;</span><br><span class="line">      &#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      img.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;                        <span class="comment">//在图片加载完成后立即发生</span></span><br><span class="line">          <span class="keyword">var</span> orgin_width  = <span class="keyword">this</span>.width;</span><br><span class="line">          <span class="keyword">var</span> orgin_height = <span class="keyword">this</span>.height;</span><br><span class="line">          <span class="keyword">var</span> max_width    = <span class="number">300</span>;</span><br><span class="line">          <span class="keyword">var</span> max_height   = <span class="number">300</span>;</span><br><span class="line">          <span class="keyword">var</span> target_width = orgin_width;</span><br><span class="line">          <span class="keyword">var</span> target_height= orgin_height;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">if</span> (orgin_width &gt; max_width || orgin_height &gt; max_height)&#123;      <span class="comment">//判断图像是否大于限定的最大长宽</span></span><br><span class="line">              <span class="keyword">if</span> (orgin_width / orgin_height &gt; max_width / max_height)&#123;   <span class="comment">//上传图像的宽高比较大，以宽为长轴对高进行拉伸</span></span><br><span class="line">                  target_width  = max_width;</span><br><span class="line">                  target_height = <span class="built_in">Math</span>.round(max_width * ( orgin_height / orgin_width )); <span class="comment">//round（）方法表示四舍五入取整数</span></span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">else</span> &#123;</span><br><span class="line">                  target_width  = <span class="built_in">Math</span>.round(max_height * ( orgin_width / orgin_height ));    <span class="comment">//高宽比较大，以高为长轴，对宽进行缩短</span></span><br><span class="line">                  target_height = max_height;</span><br><span class="line">              &#125;</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          canvas.width  = target_width;</span><br><span class="line">          canvas.height = target_height;</span><br><span class="line">          <span class="comment">//如果是png转jpg如果canvas存在透明区域，实际绘制出来会变为黑色，因为canvas默认为rgba(0,0,0,0)</span></span><br><span class="line">          <span class="comment">//在转成jpg的时候变成了rgba(0,0,0,1),解决办法就是在绘制之前为canvas铺上一层白色的底色</span></span><br><span class="line">          context.fillStyle = <span class="string">"#FFF"</span>;</span><br><span class="line">          context.fillRect(<span class="number">0</span>, <span class="number">0</span>, target_width, target_height);        <span class="comment">//绘制已填充矩形</span></span><br><span class="line">          <span class="comment">//context.clearRect(0, 0, target_width, target_height);       //清除画布并设置宽高</span></span><br><span class="line">          context.drawImage(img, <span class="number">0</span>, <span class="number">0</span>, target_width, target_height);  <span class="comment">//绘画</span></span><br><span class="line"></span><br><span class="line">          newUrl = canvas.toDataURL(<span class="string">'image/jpeg'</span>, <span class="number">0.92</span>);          <span class="comment">//base64 格式</span></span><br><span class="line">          modify_img.style.backgroundImage=<span class="string">'url('</span> + newUrl + <span class="string">')'</span>;</span><br><span class="line">      &#125;;</span><br></pre></td></tr></table></figure>
+<p>设置好后点击右上角的chrome进行测试:</p>
+<p><img src="/基于Express框架的图片压缩上传/6.png" alt=""></p>
+<p>页面显示如下（请无视那个button的乱码，过会我们用服务器进行测试就正常了）:</p>
+<p><img src="/基于Express框架的图片压缩上传/7.png" alt=""></p>
+<p>为了测试，我选择了一张1.3M的照片：</p>
+<p><img src="/基于Express框架的图片压缩上传/8.png" alt=""></p>
+<p>点击打开后，图片会进行压缩，然后显示在”img”标签里，可以明显的通过图片的锯齿感看出图片已经进行了压缩：</p>
+<p><img src="/基于Express框架的图片压缩上传/9.png" alt=""></p>
+<p>这时候如果我们去检查文档，会发现图片已经被转为了base64编码：</p>
+<p><img src="/基于Express框架的图片压缩上传/10.png" alt=""></p>
+<p>到此，我们的canvas已经顺利完成了图片的压缩工作，接下来就是服务器上场。</p>
+<h4 id="四、利用Express的multer中间件实现文件与服务器的交互"><a href="#四、利用Express的multer中间件实现文件与服务器的交互" class="headerlink" title="四、利用Express的multer中间件实现文件与服务器的交互"></a>四、利用Express的multer中间件实现文件与服务器的交互</h4><p>当时在做这一部分的时候走了很多弯路，因为express4.x已经不再包括body-parser，需要自己进行相关配置，搞得很头痛。后来发现到最新的express已经为我们提供了multer这个中间件，方便了不少，接下来先上js的代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> upload = <span class="built_in">document</span>.querySelector(<span class="string">'#upload'</span>);           <span class="comment">//为"上传"按钮绑定变量</span></span><br><span class="line">      <span class="keyword">var</span> progress = <span class="built_in">document</span>.querySelector(<span class="string">'#progress'</span>);       <span class="comment">//为进度条绑定变量</span></span><br><span class="line">      <span class="keyword">var</span> xhr    = <span class="keyword">new</span> XMLHttpRequest();                        <span class="comment">//定义xhr</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">      upload.addEventListener(<span class="string">'click'</span>, uploadFile, <span class="literal">false</span>);      <span class="comment">//设置按钮点击事件</span></span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">uploadFile</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">          <span class="function"><span class="keyword">function</span> <span class="title">dataURLtoFile</span>(<span class="params">dataurl, filename</span>) </span>&#123;           <span class="comment">//将我们上面转换的base64格式编码转为文件类型</span></span><br><span class="line">              <span class="keyword">var</span> arr = dataurl.split(<span class="string">','</span>), mime = arr[<span class="number">0</span>].match(<span class="regexp">/:(.*?);/</span>)[<span class="number">1</span>],</span><br><span class="line">                  bstr = atob(arr[<span class="number">1</span>]), n = bstr.length, u8arr = <span class="keyword">new</span> <span class="built_in">Uint8Array</span>(n);</span><br><span class="line">              <span class="keyword">while</span>(n--)&#123;</span><br><span class="line">                  u8arr[n] = bstr.charCodeAt(n);</span><br><span class="line">              &#125;</span><br><span class="line">              <span class="keyword">return</span> <span class="keyword">new</span> File([u8arr], filename, &#123;<span class="attr">type</span>:mime&#125;);</span><br><span class="line">          &#125;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">var</span> file_img = dataURLtoFile(newUrl, file.name);     <span class="comment">//定义文件类型的图片</span></span><br><span class="line">          <span class="keyword">var</span> formData = <span class="keyword">new</span> FormData();                       <span class="comment">//定义formdata的处理方法</span></span><br><span class="line">          formData.append(<span class="string">'test-upload'</span>, file_img);            <span class="comment">//定义处理域以及文件传入</span></span><br><span class="line">          xhr.onload = uploadSuccess;                          <span class="comment">//上载成功的返回函数</span></span><br><span class="line">          xhr.upload.onprogress = setProgress;                 <span class="comment">//处理进度的放回函数</span></span><br><span class="line">          xhr.open(<span class="string">'post'</span>, <span class="string">'/upload'</span>, <span class="literal">true</span>);                   <span class="comment">//ajax数据请求方法</span></span><br><span class="line">          xhr.send(formData);                                  <span class="comment">//ajax数据发送方法</span></span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">uploadSuccess</span>(<span class="params">event</span>)</span>&#123;</span><br><span class="line">          <span class="keyword">if</span>(xhr.readyState === <span class="number">4</span>)&#123;</span><br><span class="line">              <span class="built_in">console</span>.log(xhr.responseText);</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="function"><span class="keyword">function</span> <span class="title">setProgress</span>(<span class="params">event</span>) </span>&#123;</span><br><span class="line">          <span class="keyword">if</span> (event.lengthComputable) &#123;</span><br><span class="line">              <span class="keyword">var</span> complete = <span class="built_in">Number</span>.parseInt(event.loaded / event.total * <span class="number">100</span>);</span><br><span class="line">              progress.innerHTML = complete + <span class="string">'%'</span>;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br></pre></td></tr></table></figure>
+<p>这里需要注意的是</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"><span class="keyword">var</span> file_img = dataURLtoFile(newUrl, file.name);     <span class="comment">//定义文件类型的图片</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>第二个参数file.name中，file为第三部分中定义过的file，目的是为了传入压缩过的文件名称，如果需要修改请将dataURLtoFile()函数一并修改。</p>
+<p>然后我们需要对express进行一些配置，在第二部分我们已经引入中间件，那么只需要在app.js中进行引入。首先在文件头定义上传和文件这两个变量，方便我们使用，并设置好端口号：(省略号之间的为新写入的内容！！！)</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> logger = <span class="built_in">require</span>(<span class="string">'morgan'</span>);</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"><span class="keyword">var</span> upload = <span class="built_in">require</span>(<span class="string">'multer'</span>)(&#123; <span class="attr">dest</span>: <span class="string">'uploads/'</span> &#125;);	<span class="comment">//上传图片保存的文件夹为uploads</span></span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">var</span> port = <span class="number">8000</span>;</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"><span class="keyword">var</span> indexRouter = <span class="built_in">require</span>(<span class="string">'./routes/index'</span>);</span><br></pre></td></tr></table></figure>
+<p>接下来定义文件的上传输出信息：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">app.use(<span class="string">'/users'</span>, usersRouter);</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line">app.set(<span class="string">'port'</span>, port);</span><br><span class="line">app.get(<span class="string">'*'</span>, (req, res) =&gt; &#123;</span><br><span class="line">    res.redirect(<span class="string">'index.html'</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.post(<span class="string">'/upload'</span>, upload.single(<span class="string">'test-upload'</span>), (req, res) =&gt; &#123;</span><br><span class="line">    <span class="comment">// 没有附带文件</span></span><br><span class="line">    <span class="keyword">if</span> (!req.file) &#123;</span><br><span class="line">        res.json(&#123; <span class="attr">ok</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 输出文件信息</span></span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'===================================================='</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'fieldname: '</span> + req.file.fieldname);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'originalname: '</span> + req.file.originalname);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'encoding: '</span> + req.file.encoding);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'mimetype: '</span> + req.file.mimetype);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'size: '</span> + (req.file.size / <span class="number">1024</span>).toFixed(<span class="number">2</span>) + <span class="string">'KB'</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'destination: '</span> + req.file.destination);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'filename: '</span> + req.file.filename);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">'path: '</span> + req.file.path);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 重命名文件</span></span><br><span class="line">    <span class="keyword">let</span> oldPath = path.join(__dirname, req.file.path);</span><br><span class="line">    <span class="keyword">let</span> newPath = path.join(__dirname, <span class="string">'uploads/'</span> + req.file.originalname);</span><br><span class="line">    fs.rename(oldPath, newPath, (err) =&gt; &#123;</span><br><span class="line">        <span class="keyword">if</span> (err) &#123;</span><br><span class="line">            res.json(&#123; <span class="attr">ok</span>: <span class="literal">false</span> &#125;);</span><br><span class="line">            <span class="built_in">console</span>.log(err);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            res.json(&#123; <span class="attr">ok</span>: <span class="literal">true</span> &#125;);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">app.listen(port, () =&gt; &#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"[Server] localhost:"</span> + port);</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">//...</span></span><br><span class="line"><span class="built_in">module</span>.exports = app;</span><br></pre></td></tr></table></figure>
+<p>至此，我们的上传功能也搭建完毕。</p>
+<h4 id="五、程序运行："><a href="#五、程序运行：" class="headerlink" title="五、程序运行："></a>五、程序运行：</h4><p>上述操作全部完成后，因为编译器已经帮我们配好了运行环境（真的是省了一大步的事），所以我们只需要点击右上角的绿色小箭头：</p>
+<p><img src="/基于Express框架的图片压缩上传/11.png" alt=""></p>
+<p>运行：</p>
+<p><img src="/基于Express框架的图片压缩上传/12.png" alt=""></p>
+<p>这时我们的服务器已经启动了，打开chrome，输入<a href="http://localhost:8000/" target="_blank" rel="noopener">http://localhost:8000/</a> 就可以看到我们的界面了，然后选择文件后点击上传，进度显示100%就代表上传成功：</p>
+<p><img src="/基于Express框架的图片压缩上传/13.png" alt=""></p>
+<p>控制台返回给我们图片的相关信息：</p>
+<p><img src="/基于Express框架的图片压缩上传/14.png" alt=""></p>
+<p>可以看到图片从1.3M压缩到了33.33KB，同时存放路径为uploads的文件夹；</p>
+<p>接下来到我们定义好的存图片的地方：</p>
+<p><img src="/基于Express框架的图片压缩上传/15.png" alt=""></p>
+<p>然后，然后就开心的玩这个东西了，😝。</p>
+<p>其实express也可以通过裁剪的方式进行图片压缩，不过那需要现将源文件上传至服务器（还是会浪费流量，而且加载速度也会受影响）；使用canvas先在本地进行图片压缩，然后上传服务器，这是目前主流的做法。本项目需要注意的点在于压缩好后的图片只是存在<img>的标签下，而上传的需要是文件，这就需要用dataURLtoFile()这一个函数将图片进行转化，再对文件进行上传。否则将这一部分代码改为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">formData.append(<span class="string">'test-upload'</span>, file); </span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>上传的仍然是未被压缩的源文件。</p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://yoursite.com/基于Express框架的图片压缩上传/" data-id="cjgw58pfj00018fzzkfr2idnn" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/node.js传统读写流的时间先后问题/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">node.js非管道方法读写错误问题</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+
+</section>
+            
+                
+<aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/基于Express框架的图片压缩上传/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/基于Express框架的图片压缩上传/" class="title">基于Express框架的图片压缩上传</a></p>
+                            <p class="item-date"><time datetime="2018-05-07T05:11:15.238Z" itemprop="datePublished">2018-05-07</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/node.js传统读写流的时间先后问题/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/node.js传统读写流的时间先后问题/" class="title">node.js非管道方法读写错误问题</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T06:09:17.293Z" itemprop="datePublished">2018-05-04</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs学习/">Nodejs学习</a><span class="tag-list-count">1</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Nodejs学习/" style="font-size: 10px;">Nodejs学习</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2018 Knight Zeng<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
