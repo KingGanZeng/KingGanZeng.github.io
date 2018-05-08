@@ -3,19 +3,15 @@
 <head>
     <meta charset="utf-8">
     
-    <title>KingGanZeng`s blogs</title>
+    <title>Tag: Nodejs | KingGanZeng`s blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="你好 这是我第一次使用typora 试一试真很棒！">
-<meta property="og:type" content="article">
+    <meta property="og:type" content="website">
 <meta property="og:title" content="KingGanZeng`s blogs">
-<meta property="og:url" content="http://yoursite.com/你好Typora/index.html">
+<meta property="og:url" content="http://yoursite.com/tags/Nodejs/index.html">
 <meta property="og:site_name" content="KingGanZeng`s blogs">
-<meta property="og:description" content="你好 这是我第一次使用typora 试一试真很棒！">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2018-04-29T09:07:17.006Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="KingGanZeng`s blogs">
-<meta name="twitter:description" content="你好 这是我第一次使用typora 试一试真很棒！">
     
 
     
@@ -39,6 +35,17 @@
     
     
     
+        <script>
+var _hmt = _hmt || [];
+(function() {
+    var hm = document.createElement("script");
+    hm.src = "//hm.baidu.com/hm.js?5d1ffc2921cf60ea75f51ab11887c920";
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+    
 
 
 </head>
@@ -56,7 +63,7 @@
                 
                     <a class="main-nav-link" href="/.">主页</a>
                 
-                    <a class="main-nav-link" href="/archives">归档</a>
+                    <a class="main-nav-link" href="/archives">时间线</a>
                 
                     <a class="main-nav-link" href="/categories">分类</a>
                 
@@ -121,7 +128,7 @@
                 
                     <td><a class="main-nav-link" href="/.">主页</a></td>
                 
-                    <td><a class="main-nav-link" href="/archives">归档</a></td>
+                    <td><a class="main-nav-link" href="/archives">时间线</a></td>
                 
                     <td><a class="main-nav-link" href="/categories">分类</a></td>
                 
@@ -152,16 +159,16 @@
             <h2 id="name">Knight Zeng</h2>
             <h3 id="title">大三老狗 &amp; Web前端开发</h3>
             <span id="location"><i class="fa fa-map-marker"></i>上海, 中国</span>
-            <a id="follow" target="_blank" href="https://github.com/KingGanZeng">FOLLOW</a>
+            <a id="follow" target="_blank" href="https://github.com/KingGanZeng">订阅</a>
         </div>
         <div class="article-info profile-block">
             <div class="article-info-block">
-                3
-                <span>posts</span>
+                2
+                <span>提交</span>
             </div>
             <div class="article-info-block">
-                0
-                <span>tag</span>
+                1
+                <span>标签</span>
             </div>
         </div>
         
@@ -202,118 +209,76 @@
 </aside>
 
             
-            <section id="main"><article id="post-你好Typora" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
-            <p>你好</p>
-<p>这是我第一次使用typora</p>
-<p>试一试真很棒！</p>
-
-        
-        </div>
-        <footer class="article-footer">
-            <div class="share-container">
-
-
-
-</div>
-
-    <a data-url="http://yoursite.com/你好Typora/" data-id="cjgmjhz4e00024ezzldva5xua" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
-
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
-
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-
-        </footer>
+            <section id="main">
+<div class="timeline timeline-wrap">
+    <div class="timeline-row timeline-row-major">
+        <span class="node"><i class="fa fa-tag"></i></span>
+        <h1 class="title">#Nodejs</h1>
     </div>
     
-        
-<nav id="article-nav">
+        <div class="timeline-row">
+            <span class="node"></span>
+            <div class="content">
+                
     
+        <h1 itemprop="name">
+            <a class="timeline-article-title" href="/基于Express框架的图片压缩上传/">基于Express框架的图片压缩上传</a>
+        </h1>
     
-        <a href="/test/" id="article-nav-older" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Older</strong>
-            <div class="article-nav-title">Test for Hexo</div>
+
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/基于Express框架的图片压缩上传/">
+            <time datetime="2018-05-07T05:11:15.238Z" itemprop="datePublished">2018-05-07</time>
         </a>
+    </div>
+
+
+                    
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Nodejs/">Nodejs</a>
+    </div>
+
+                </div>
+            </div>
+        </div>
     
-</nav>
-
-
+        <div class="timeline-row">
+            <span class="node"></span>
+            <div class="content">
+                
     
-</article>
-
-
+        <h1 itemprop="name">
+            <a class="timeline-article-title" href="/node.js传统读写流的时间先后问题/">node.js非管道方法读写错误问题</a>
+        </h1>
     
-    
 
+                <div class="article-meta">
+                    
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/node.js传统读写流的时间先后问题/">
+            <time datetime="2018-05-04T06:09:17.293Z" itemprop="datePublished">2018-05-04</time>
+        </a>
+    </div>
+
+
+                    
+                    
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Nodejs/">Nodejs</a>
+    </div>
+
+                </div>
+            </div>
+        </div>
+    
+</div>
 </section>
             
                 
@@ -321,14 +286,14 @@
    
         
     <div class="widget-wrap">
-        <h3 class="widget-title">recent</h3>
+        <h3 class="widget-title">最新更博</h3>
         <div class="widget">
             <ul id="recent-post" class="">
                 
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/你好Typora/" class="thumbnail">
+                            <a href="/基于Express框架的图片压缩上传/" class="thumbnail">
     
     
         <span class="thumbnail-image thumbnail-none"></span>
@@ -339,15 +304,15 @@
                         
                         <div class="item-inner">
                             <p class="item-category"></p>
-                            <p class="item-title"><a href="/你好Typora/" class="title"></a></p>
-                            <p class="item-date"><time datetime="2018-04-29T09:07:17.006Z" itemprop="datePublished">2018-04-29</time></p>
+                            <p class="item-title"><a href="/基于Express框架的图片压缩上传/" class="title">基于Express框架的图片压缩上传</a></p>
+                            <p class="item-date"><time datetime="2018-05-07T05:11:15.238Z" itemprop="datePublished">2018-05-07</time></p>
                         </div>
                     </li>
                 
                     <li>
                         
                         <div class="item-thumbnail">
-                            <a href="/test/" class="thumbnail">
+                            <a href="/node.js传统读写流的时间先后问题/" class="thumbnail">
     
     
         <span class="thumbnail-image thumbnail-none"></span>
@@ -358,27 +323,8 @@
                         
                         <div class="item-inner">
                             <p class="item-category"></p>
-                            <p class="item-title"><a href="/test/" class="title">Test for Hexo</a></p>
-                            <p class="item-date"><time datetime="2018-04-29T08:02:30.183Z" itemprop="datePublished">2018-04-29</time></p>
-                        </div>
-                    </li>
-                
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/hello-world/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/hello-world/" class="title">Hello World</a></p>
-                            <p class="item-date"><time datetime="2018-04-29T07:41:51.920Z" itemprop="datePublished">2018-04-29</time></p>
+                            <p class="item-title"><a href="/node.js传统读写流的时间先后问题/" class="title">node.js非管道方法读写错误问题</a></p>
+                            <p class="item-date"><time datetime="2018-05-04T06:09:17.293Z" itemprop="datePublished">2018-05-04</time></p>
                         </div>
                     </li>
                 
@@ -391,20 +337,25 @@
     
         
     <div class="widget-wrap">
-        <h3 class="widget-title">archives</h3>
+        <h3 class="widget-title">时间线</h3>
         <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/04/">April 2018</a><span class="archive-list-count">3</span></li></ul>
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">2</span></li></ul>
         </div>
     </div>
 
     
         
-    
-        
+    <div class="widget-wrap">
+        <h3 class="widget-title">标签</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
     
         
     <div class="widget-wrap widget-list">
-        <h3 class="widget-title">links</h3>
+        <h3 class="widget-title">友情链接</h3>
         <div class="widget">
             <ul>
                 
