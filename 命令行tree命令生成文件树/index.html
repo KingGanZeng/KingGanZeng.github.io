@@ -3,15 +3,24 @@
 <head>
     <meta charset="utf-8">
     
-    <title>Archive: 2018/5 | KingGanZeng`s blogs</title>
+    <title>命令行tree命令生成文件树 | KingGanZeng`s blogs</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta property="og:type" content="website">
-<meta property="og:title" content="KingGanZeng`s blogs">
-<meta property="og:url" content="http://yoursite.com/archives/2018/05/index.html">
+    <meta name="description" content="为了方便查看文件内容以及相关目录，我们一般用文件树进行操作，在windows系统下，我们可以直接使用tree命令进行操作： 1tree &amp;gt; list.txt">
+<meta name="keywords" content="TIPS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="命令行tree命令生成文件树">
+<meta property="og:url" content="http://yoursite.com/命令行tree命令生成文件树/index.html">
 <meta property="og:site_name" content="KingGanZeng`s blogs">
+<meta property="og:description" content="为了方便查看文件内容以及相关目录，我们一般用文件树进行操作，在windows系统下，我们可以直接使用tree命令进行操作： 1tree &amp;gt; list.txt">
 <meta property="og:locale" content="default">
+<meta property="og:image" content="http://yoursite.com/命令行tree命令生成文件树/1.png">
+<meta property="og:image" content="http://yoursite.com/命令行tree命令生成文件树/2.png">
+<meta property="og:image" content="http://yoursite.com/命令行tree命令生成文件树/4.png">
+<meta property="og:updated_time" content="2018-05-15T03:11:01.656Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="KingGanZeng`s blogs">
+<meta name="twitter:title" content="命令行tree命令生成文件树">
+<meta name="twitter:description" content="为了方便查看文件内容以及相关目录，我们一般用文件树进行操作，在windows系统下，我们可以直接使用tree命令进行操作： 1tree &amp;gt; list.txt">
+<meta name="twitter:image" content="http://yoursite.com/命令行tree命令生成文件树/1.png">
     
 
     
@@ -209,25 +218,21 @@ var _hmt = _hmt || [];
 </aside>
 
             
-            <section id="main"><div class="timeline timeline-wrap">
-    
-            <div class="timeline-row timeline-row-major">
-                <span class="node"><i class="fa fa-calendar"></i></span>
-                <h1 class="title">2018</h1>
-            </div>
+            <section id="main"><article id="post-命令行tree命令生成文件树" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
         
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+        
+            <header class="article-header">
                 
     
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/命令行tree命令生成文件树/">命令行tree命令生成文件树</a>
+        <h1 class="article-title" itemprop="name">
+            命令行tree命令生成文件树
         </h1>
     
 
-                <div class="article-meta">
-                    
+                
+                    <div class="article-meta">
+                        
     <div class="article-date">
         <i class="fa fa-calendar"></i>
         <a href="/命令行tree命令生成文件树/">
@@ -236,111 +241,163 @@ var _hmt = _hmt || [];
     </div>
 
 
-                    
-                    
+                        
+                        
     <div class="article-tag">
         <i class="fa fa-tag"></i>
         <a class="tag-link" href="/tags/TIPS/">TIPS</a>
     </div>
 
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
+                    </div>
                 
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/Koa路由和静态资源中间件初探/">Koa路由和静态资源中间件初探</a>
-        </h1>
-    
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <p>为了方便查看文件内容以及相关目录，我们一般用文件树进行操作，在windows系统下，我们可以直接使用tree命令进行操作：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree &gt; list.txt</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p>实例图片如下：</p>
+<p><img src="/命令行tree命令生成文件树/1.png" alt="例图1"></p>
+<p>这样我们可以生成koa-learn这个文件夹下的所有文件目录，输出结果为：</p>
+<p><img src="/命令行tree命令生成文件树/2.png" alt="例图2"></p>
+<p>那么对于Mac OS或者Linux系统，可以通过以下命令安装tree这个生成插件，打开终端并输入：（没有安装brew请先输入brew install）</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install tree</span><br></pre></td></tr></table></figure>
+<p>然后等待安装完毕，因为是国外的服务器，所以下载可能比较慢。</p>
+<p>然后进入到文件夹下，在命令行输入：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree -a</span><br></pre></td></tr></table></figure>
+<p>接着我们可以在终端看到当前的目录树：<img src="/命令行tree命令生成文件树/4.png" alt="例图3"></p>
+<p>除此之外我们还有其他的参数可以设置：</p>
+<table>
+<thead>
+<tr>
+<th>命令行</th>
+<th>效果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>tree -d</td>
+<td>只显示文件夹</td>
+</tr>
+<tr>
+<td>tree -D</td>
+<td>显示文件的最后修改时间</td>
+</tr>
+<tr>
+<td>tree -L n</td>
+<td>n表示显示项目的层级，n=3即只显示项目的三层结构</td>
+</tr>
+<tr>
+<td>tree -I pattern</td>
+<td>pattern表示想要过滤的目录，例如 tree -I “node_modules”可以过滤掉node_modules这个文件夹</td>
+</tr>
+</tbody>
+</table>
+<p>注意，这里的参数-d、-D区分大小写，大家可以自行实验。</p>
 
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/Koa路由和静态资源中间件初探/">
-            <time datetime="2018-05-10T09:27:51.000Z" itemprop="datePublished">2018-05-10</time>
-        </a>
-    </div>
-
-
-                    
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Koa/">Koa</a>
-    </div>
-
-                </div>
-            </div>
+        
         </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/基于Express框架的图片压缩上传/">基于Express框架的图片压缩上传</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/基于Express框架的图片压缩上传/">
-            <time datetime="2018-05-07T05:11:15.238Z" itemprop="datePublished">2018-05-07</time>
-        </a>
-    </div>
+        <footer class="article-footer">
+            <div class="share-container">
 
 
-                    
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Nodejs/">Nodejs</a>
-    </div>
 
-                </div>
-            </div>
-        </div>
-    
-        <div class="timeline-row">
-            <span class="node"></span>
-            <div class="content">
-                
-    
-        <h1 itemprop="name">
-            <a class="timeline-article-title" href="/node.js传统读写流的时间先后问题/">node.js非管道方法读写错误问题</a>
-        </h1>
-    
-
-                <div class="article-meta">
-                    
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/node.js传统读写流的时间先后问题/">
-            <time datetime="2018-05-04T06:09:17.293Z" itemprop="datePublished">2018-05-04</time>
-        </a>
-    </div>
-
-
-                    
-                    
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Nodejs/">Nodejs</a>
-    </div>
-
-                </div>
-            </div>
-        </div>
-    
 </div>
+
+    <a data-url="http://yoursite.com/命令行tree命令生成文件树/" data-id="cjh78c20d0003vtzzsmn1mt6j" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+    
+        <a href="/Koa路由和静态资源中间件初探/" id="article-nav-older" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Older</strong>
+            <div class="article-nav-title">Koa路由和静态资源中间件初探</div>
+        </a>
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    
+
 </section>
             
                 
