@@ -20,7 +20,7 @@
 <meta property="og:image" content="http://yoursite.com/Koa路由和静态资源中间件初探/4.png">
 <meta property="og:image" content="http://yoursite.com/Koa路由和静态资源中间件初探/5.png">
 <meta property="og:image" content="http://yoursite.com/Koa路由和静态资源中间件初探/6.png">
-<meta property="og:updated_time" content="2018-05-15T05:36:14.637Z">
+<meta property="og:updated_time" content="2018-05-15T05:45:20.218Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Koa路由和静态资源中间件初探">
 <meta name="twitter:description" content="Koa作为目前最为轻巧的nodejs框架，搭建SPA（单页面应用）可以说是得心应手，那么今天就来简单入一下Koa这个深坑，主要是总结路由的使用（用于页面切换）以及静态资源的加载，两者都是基于koa的中间件。 一、项目运行环境：​    phpstorm    2018.1版本 ​    nodejs        8.11.1版本">
@@ -276,7 +276,7 @@ var _hmt = _hmt || [];
 <p>基本的配置搭建完毕，接下来是一些简单的应用。</p>
 <h4 id="三、项目主体代码："><a href="#三、项目主体代码：" class="headerlink" title="三、项目主体代码："></a>三、项目主体代码：</h4><p>首先在项目根目录下按照这个目录树进行创建(node_modules文件夹里面东西太多，所以这里就不放出来了)：                                                    </p>
 <p><img src="/Koa路由和静态资源中间件初探/7.png" alt=""></p>
-<p>（Tips：Mac可以通过brew install tree安装生成目录树的指令，然后进入到项目文件夹中在终端输入tree来生成目录树，Windows可以直接在命令行输入tree来生成，大家可以查看这篇文章：<a href="/命令行tree命令生成文件树.html">命令行tree命令生成文件树</a>）</p>
+<p>（Tips：Mac可以通过brew install tree安装生成目录树的指令，然后进入到项目文件夹中在终端输入tree来生成目录树，Windows可以直接在命令行输入tree来生成，大家可以查看这篇文章：<a href="https://kingganzeng.github.io/%E5%91%BD%E4%BB%A4%E8%A1%8Ctree%E5%91%BD%E4%BB%A4%E7%94%9F%E6%88%90%E6%96%87%E4%BB%B6%E6%A0%91/#more" target="_blank" rel="noopener">命令行tree命令生成文件树</a>）</p>
 <p>其中view文件夹主要存放我们的html页面，public作为公共文件夹用来存放css以及js文件，接下来首先编辑app.js文件进行配置：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">'use strict'</span></span><br><span class="line"><span class="keyword">const</span> koa   = <span class="built_in">require</span>(<span class="string">'koa'</span>);</span><br><span class="line"><span class="keyword">const</span> route = <span class="built_in">require</span>(<span class="string">'koa-route'</span>);</span><br><span class="line"><span class="keyword">const</span> fs    = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> app = <span class="keyword">new</span> koa();</span><br><span class="line"><span class="comment">//定义静态资源文件夹</span></span><br><span class="line">app.use(<span class="built_in">require</span>(<span class="string">'koa-static'</span>)(__dirname + <span class="string">'/public'</span>));</span><br><span class="line"></span><br><span class="line"><span class="comment">//为不同路由设置不同响应</span></span><br><span class="line"><span class="keyword">const</span> main = <span class="function"><span class="params">ctx</span> =&gt;</span> &#123;</span><br><span class="line">    ctx.response.type = <span class="string">'html'</span>;</span><br><span class="line">    ctx.response.body = fs.createReadStream(<span class="string">'./view/index.html'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">const</span> about = <span class="function"><span class="params">ctx</span> =&gt;</span> &#123;</span><br><span class="line">    ctx.response.type = <span class="string">'html'</span>;</span><br><span class="line">    ctx.response.body = fs.createReadStream(<span class="string">'./view/about.html'</span>);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义路由响应,根目录下显示“主页”,about目录下显示“关于页”</span></span><br><span class="line">app.use(route.get(<span class="string">'/'</span>, main));</span><br><span class="line">app.use(route.get(<span class="string">'/about'</span>,about));</span><br><span class="line"></span><br><span class="line">app.listen(<span class="number">3300</span>);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"监听成功，端口号为3300"</span>);</span><br></pre></td></tr></table></figure>
 <p>css和js文件这里就不放出了，大家按照正常的写法来写就好，而对于html文件，因为我们要把css和js关联进去，这里要注意关联路径的写法：</p>
@@ -302,7 +302,7 @@ var _hmt = _hmt || [];
 
 </div>
 
-    <a data-url="http://yoursite.com/Koa路由和静态资源中间件初探/" data-id="cjh7904kl00000tzzuugmvr16" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/Koa路由和静态资源中间件初探/" data-id="cjh7971l800002mzzatl2co11" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
