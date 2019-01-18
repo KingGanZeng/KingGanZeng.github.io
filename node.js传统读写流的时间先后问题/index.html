@@ -1,10 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html  lang="zh">
 <head>
     <meta charset="utf-8">
-    
-    <title>node.js非管道方法读写错误问题 | KingGanZeng`s blogs</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+<title>node.js非管道方法读写错误问题 - KingGanZeng`s blogs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+
+
+
     <meta name="description" content="今天在学习node.js流的时候，参照菜鸟教程的文档写了从流中读取和写入数据的操作，但是在两者同时运行的时候，却发现写入文档并没有任何数据写入。 先上最初的错误代码：">
 <meta name="keywords" content="Nodejs">
 <meta property="og:type" content="article">
@@ -12,263 +14,169 @@
 <meta property="og:url" content="http://yoursite.com/node.js传统读写流的时间先后问题/index.html">
 <meta property="og:site_name" content="KingGanZeng`s blogs">
 <meta property="og:description" content="今天在学习node.js流的时候，参照菜鸟教程的文档写了从流中读取和写入数据的操作，但是在两者同时运行的时候，却发现写入文档并没有任何数据写入。 先上最初的错误代码：">
-<meta property="og:locale" content="default">
+<meta property="og:locale" content="zh-CN">
 <meta property="og:updated_time" content="2018-05-08T05:53:39.676Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="node.js非管道方法读写错误问题">
 <meta name="twitter:description" content="今天在学习node.js流的时候，参照菜鸟教程的文档写了从流中读取和写入数据的操作，但是在两者同时运行的时候，却发现写入文档并没有任何数据写入。 先上最初的错误代码：">
+
+
+
+
+
+<link rel="icon" href="/images/logo.png">
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.7.2/css/bulma.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu:400,600|Source+Code+Pro">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/monokai.css">
+
+
+    
+    
+    
+    <style>body>.footer,body>.navbar,body>.section{opacity:0}</style>
     
 
     
+    
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css">
+    
+
+    
+    
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.css">
+
+
+    
+    
+    
+    
+
+<link rel="stylesheet" href="/css/back-to-top.css">
+
+
+    
+    
+
+    
+    
+    
+    
+
+    
+    
+<link rel="stylesheet" href="/css/progressbar.css">
+<script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script>
 
     
 
-    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="/libs/open-sans/styles.css">
-    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
 
-    <link rel="stylesheet" href="/css/style.css">
-
-    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
-    
-    
-        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
-    
-    
-    
-    
-    
-        <script>
-var _hmt = _hmt || [];
-(function() {
-    var hm = document.createElement("script");
-    hm.src = "//hm.baidu.com/hm.js?5d1ffc2921cf60ea75f51ab11887c920";
-    var s = document.getElementsByTagName("script")[0];
-    s.parentNode.insertBefore(hm, s);
-})();
-</script>
-
-    
-
-
+<link rel="stylesheet" href="/css/style.css">
 </head>
-
-<body>
-    <div id="container">
-        <header id="header">
-    <div id="header-main" class="header-inner">
-        <div class="outer">
-            <a href="/" id="logo">
-                <i class="logo"></i>
-                <span class="site-title">KingGanZeng`s blogs</span>
+<body class="is-3-column">
+    <nav class="navbar navbar-main">
+    <div class="container">
+        <div class="navbar-brand is-flex-center">
+            <a class="navbar-item navbar-logo" href="/">
+            
+                <img src="/images/logo.png" alt="node.js非管道方法读写错误问题" height="36">
+            
             </a>
-            <nav id="main-nav">
-                
-                    <a class="main-nav-link" href="/.">主页</a>
-                
-                    <a class="main-nav-link" href="/archives">时间线</a>
-                
-                    <a class="main-nav-link" href="/categories">分类</a>
-                
-                    <a class="main-nav-link" href="/tags">标签</a>
-                
-                    <a class="main-nav-link" href="/about">关于</a>
-                
-            </nav>
+        </div>
+        <div class="navbar-menu">
             
+            <div class="navbar-start">
                 
-                <nav id="sub-nav">
-                    <div class="profile" id="profile-nav">
-                        <a id="profile-anchor" href="javascript:;">
-                            <img class="avatar" src="/css/images/avatar.jpg" />
-                            <i class="fa fa-caret-down"></i>
-                        </a>
-                    </div>
-                </nav>
-            
-            <div id="search-form-wrap">
-
-    <form class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
-        <button type="submit" class="search-form-submit"></button>
-    </form>
-    <div class="ins-search">
-    <div class="ins-search-mask"></div>
-    <div class="ins-search-container">
-        <div class="ins-input-wrapper">
-            <input type="text" class="ins-search-input" placeholder="Type something..." />
-            <span class="ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
-        </div>
-        <div class="ins-section-wrapper">
-            <div class="ins-section-container"></div>
-        </div>
-    </div>
-</div>
-<script>
-(function (window) {
-    var INSIGHT_CONFIG = {
-        TRANSLATION: {
-            POSTS: 'Posts',
-            PAGES: 'Pages',
-            CATEGORIES: 'Categories',
-            TAGS: 'Tags',
-            UNTITLED: '(Untitled)',
-        },
-        ROOT_URL: '/',
-        CONTENT_URL: '/content.json',
-    };
-    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
-})(window);
-</script>
-<script src="/js/insight.js"></script>
-
-</div>
-        </div>
-    </div>
-    <div id="main-nav-mobile" class="header-sub header-inner">
-        <table class="menu outer">
-            <tr>
+                <a class="navbar-item"
+                href="/">主页</a>
                 
-                    <td><a class="main-nav-link" href="/.">主页</a></td>
+                <a class="navbar-item"
+                href="/archives">时间线</a>
                 
-                    <td><a class="main-nav-link" href="/archives">时间线</a></td>
+                <a class="navbar-item"
+                href="/categories">分类</a>
                 
-                    <td><a class="main-nav-link" href="/categories">分类</a></td>
+                <a class="navbar-item"
+                href="/tags">标签</a>
                 
-                    <td><a class="main-nav-link" href="/tags">标签</a></td>
+                <a class="navbar-item"
+                href="/about">关于</a>
                 
-                    <td><a class="main-nav-link" href="/about">关于</a></td>
-                
-                <td>
-                    
-    <div class="search-form">
-        <input type="text" class="ins-search-input search-form-input" placeholder="Search" />
-    </div>
-
-                </td>
-            </tr>
-        </table>
-    </div>
-</header>
-
-        <div class="outer">
-            
-                
-
-<aside id="profile" class="profile-fixed">
-    <div class="inner profile-inner">
-        <div class="base-info profile-block">
-            <img id="avatar" src="/css/images/avatar.jpg" />
-            <h2 id="name">Knight Zeng</h2>
-            <h3 id="title">大三老狗 &amp; Web前端开发</h3>
-            <span id="location"><i class="fa fa-map-marker"></i>上海, 中国</span>
-            <a id="follow" target="_blank" href="https://github.com/KingGanZeng">订阅</a>
-        </div>
-        <div class="article-info profile-block">
-            <div class="article-info-block">
-                7
-                <span>提交</span>
             </div>
-            <div class="article-info-block">
-                5
-                <span>标签</span>
+            
+            <div class="navbar-end">
+                
+                    
+                    
+                    <a class="navbar-item" target="_blank" title="Follow me on GitHub" href="https://github.com/KingGanZeng">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                    
+                
+                
+                
+                <a class="navbar-item search" title="搜索" href="javascript:;">
+                    <i class="fas fa-search"></i>
+                </a>
+                
             </div>
         </div>
-        
-        <div class="profile-block social-links">
-            <table>
-                <tr>
-                    
-                    
-                    <td>
-                        <a href="https://github.com/KingGanZeng" target="_blank" title="github" class=tooltip>
-                            <i class="fa fa-github"></i>
-                        </a>
-                    </td>
-                    
-                    <td>
-                        <a href="https://weibo.com/u/2852938435?refer_flag=1001030001_&nick=Knight-Zeng" target="_blank" title="weibo" class=tooltip>
-                            <i class="fa fa-weibo"></i>
-                        </a>
-                    </td>
-                    
-                    <td>
-                        <a href="/" target="_blank" title="weixin" class=tooltip>
-                            <i class="fa fa-weixin"></i>
-                        </a>
-                    </td>
-                    
-                    <td>
-                        <a href="/" target="_blank" title="qq" class=tooltip>
-                            <i class="fa fa-qq"></i>
-                        </a>
-                    </td>
-                    
-                </tr>
-            </table>
-        </div>
-        
     </div>
-</aside>
-
-            
-            <section id="main"><article id="post-node.js传统读写流的时间先后问题" class="article article-type-post" itemscope itemprop="blogPost">
-    <div class="article-inner">
-        
-        
-            <header class="article-header">
-                
+</nav>
     
-        <h1 class="article-title" itemprop="name">
-            node.js非管道方法读写错误问题
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-content article ">
+        
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2018-05-04T06:09:17.293Z">2018-05-04</time>
+                
+                
+                <span class="level-item has-text-grey">
+                    
+                    
+                    6 分钟 读完 (大约 915 个字)
+                </span>
+                
+            </div>
+        </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                node.js非管道方法读写错误问题
+            
         </h1>
-    
-
-                
-                    <div class="article-meta">
-                        
-    <div class="article-date">
-        <i class="fa fa-calendar"></i>
-        <a href="/node.js传统读写流的时间先后问题/">
-            <time datetime="2018-05-04T06:09:17.293Z" itemprop="datePublished">2018-05-04</time>
-        </a>
-    </div>
-
-
-                        
-                        
-    <div class="article-tag">
-        <i class="fa fa-tag"></i>
-        <a class="tag-link" href="/tags/Nodejs/">Nodejs</a>
-    </div>
-
-                    </div>
-                
-            </header>
-        
-        
-        <div class="article-entry" itemprop="articleBody">
-        
-            
+        <div class="content">
             <p>今天在学习node.js流的时候，参照菜鸟教程的文档写了从流中读取和写入数据的操作，但是在两者同时运行的时候，却发现写入文档并没有任何数据写入。</p>
 <p>先上最初的错误代码：</p>
 <a id="more"></a>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//引入流模块</span></span><br><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"><span class="keyword">var</span> data = <span class="string">''</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> readerStream = fs.createReadStream(<span class="string">'input.txt'</span>);</span><br><span class="line"><span class="keyword">var</span> writerStream = fs.createWriteStream(<span class="string">'output.txt'</span>); </span><br><span class="line"></span><br><span class="line"><span class="comment">//将文档从input.txt中读取出来存入流</span></span><br><span class="line">readerStream.on(<span class="string">'data'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">chunk</span>)</span>&#123;</span><br><span class="line">	<span class="built_in">console</span>.log(<span class="string">"1、Start:"</span>);</span><br><span class="line">	data += chunk;</span><br><span class="line">&#125;);</span><br><span class="line">readerStream.on(<span class="string">'end'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"2、"</span> + data);</span><br><span class="line">&#125;);</span><br><span class="line">readerStream.on(<span class="string">'error'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err.stack);</span><br><span class="line">&#125;)；</span><br><span class="line"></span><br><span class="line"><span class="comment">//从流中读取数据写入output.txt</span></span><br><span class="line">writerStream.write(data, <span class="string">'UTF8'</span>);</span><br><span class="line">writerStream.end();</span><br><span class="line">writerStream.on(<span class="string">'finish'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"3、Write done!"</span>);</span><br><span class="line">    <span class="built_in">console</span>.log(<span class="string">"4、All done!"</span>);</span><br><span class="line">&#125;);</span><br><span class="line">writerStream.on(<span class="string">'err'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err</span>)</span>&#123;</span><br><span class="line">    <span class="built_in">console</span>.log(err.stack);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"5、Program Finished！"</span>);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-comment">//引入流模块</span></span><br><span class="line"><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);</span><br><span class="line"><span class="hljs-keyword">var</span> data = <span class="hljs-string">''</span>;</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">var</span> readerStream = fs.createReadStream(<span class="hljs-string">'input.txt'</span>);</span><br><span class="line"><span class="hljs-keyword">var</span> writerStream = fs.createWriteStream(<span class="hljs-string">'output.txt'</span>); </span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">//将文档从input.txt中读取出来存入流</span></span><br><span class="line">readerStream.on(<span class="hljs-string">'data'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">chunk</span>)</span>&#123;</span><br><span class="line">	<span class="hljs-built_in">console</span>.log(<span class="hljs-string">"1、Start:"</span>);</span><br><span class="line">	data += chunk;</span><br><span class="line">&#125;);</span><br><span class="line">readerStream.on(<span class="hljs-string">'end'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"2、"</span> + data);</span><br><span class="line">&#125;);</span><br><span class="line">readerStream.on(<span class="hljs-string">'error'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>)</span>&#123;</span><br><span class="line">    <span class="hljs-built_in">console</span>.log(err.stack);</span><br><span class="line">&#125;)；</span><br><span class="line"></span><br><span class="line"><span class="hljs-comment">//从流中读取数据写入output.txt</span></span><br><span class="line">writerStream.write(data, <span class="hljs-string">'UTF8'</span>);</span><br><span class="line">writerStream.end();</span><br><span class="line">writerStream.on(<span class="hljs-string">'finish'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"3、Write done!"</span>);</span><br><span class="line">    <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"4、All done!"</span>);</span><br><span class="line">&#125;);</span><br><span class="line">writerStream.on(<span class="hljs-string">'err'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">err</span>)</span>&#123;</span><br><span class="line">    <span class="hljs-built_in">console</span>.log(err.stack);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="hljs-built_in">console</span>.log(<span class="hljs-string">"5、Program Finished！"</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Hello world!</span><br></pre></td></tr></table></figure>
 <p>程序的运行结果如下：</p>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">5、Program Finished!</span><br><span class="line">1、Start:</span><br><span class="line">3、Write done!</span><br><span class="line">4、All done!</span><br><span class="line">2、Hello world!</span><br></pre></td></tr></table></figure>
+<figure class="highlight console hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">5、Program Finished!</span><br><span class="line">1、Start:</span><br><span class="line">3、Write done!</span><br><span class="line">4、All done!</span><br><span class="line">2、Hello world!</span><br></pre></td></tr></table></figure>
 <p>这时去查看同目录下生成的output.txt是没有内容的，根据以上代码，显然在进行写入操作时，data变量还没有数据读入，因此output写入数据为空（你也可以尝试定义data为一个字符串进行测试）。</p>
 <p>接下来对写入流（writerStream）设定一个定时器，1秒后进行操作，修改代码为：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    writerStream.write(data, <span class="string">'UTF8'</span>);</span><br><span class="line">&#125;,<span class="number">1000</span>);</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    writeStream.end();</span><br><span class="line">&#125;,<span class="number">2000</span>)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="line">    writerStream.write(data, <span class="hljs-string">'UTF8'</span>);</span><br><span class="line">&#125;,<span class="hljs-number">1000</span>);</span><br><span class="line">setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="line">    writeStream.end();</span><br><span class="line">&#125;,<span class="hljs-number">2000</span>)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>这里需要注意，在对写操作设置定时器的时候，需要对end方法也设定定时器，并且时间需要大于我们写操作定时器的时间，不然会出现以下错误：</p>
-<figure class="highlight console"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error: write after end</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight console hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Error: write after end</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>最终调试到以下阶段：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    writerStream.write(data, <span class="string">'UTF8'</span>);</span><br><span class="line">&#125;,<span class="number">3</span>);</span><br><span class="line"><span class="comment">//定时为2则抛出'Error: write after end'</span></span><br><span class="line">setTimeout(<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">    writeStream.end();</span><br><span class="line">&#125;,<span class="number">5</span>)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="line">    writerStream.write(data, <span class="hljs-string">'UTF8'</span>);</span><br><span class="line">&#125;,<span class="hljs-number">3</span>);</span><br><span class="line"><span class="hljs-comment">//定时为2则抛出'Error: write after end'</span></span><br><span class="line">setTimeout(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)</span>&#123;</span><br><span class="line">    writeStream.end();</span><br><span class="line">&#125;,<span class="hljs-number">5</span>)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
 <p>可以看到从文件中读取数据至少要3ms（实际的读取时间跟文件路径以及大小有关），而程序读取完只需要不到1ms，所以才出现了最开始写入数据为空的bug。这也侧面说明了node.js的异步处理方式。</p>
 <p>当然，其实node.js已经帮我们做好了这一堆繁杂的操作，管道流（pipe）很好的解决了这一个问题，我们的代码可以简化为：</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> readerStream = fs.createReadStream(<span class="string">'input.txt'</span>);</span><br><span class="line"><span class="keyword">var</span> writeeStream = fs.createWriteStream(<span class="string">'output.txt'</span>);</span><br><span class="line"></span><br><span class="line">readerStream.pipe(writeStream);</span><br><span class="line"><span class="built_in">console</span>.log(<span class="string">"All done!"</span>);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);</span><br><span class="line"></span><br><span class="line"><span class="hljs-keyword">var</span> readerStream = fs.createReadStream(<span class="hljs-string">'input.txt'</span>);</span><br><span class="line"><span class="hljs-keyword">var</span> writeeStream = fs.createWriteStream(<span class="hljs-string">'output.txt'</span>);</span><br><span class="line"></span><br><span class="line">readerStream.pipe(writeStream);</span><br><span class="line"><span class="hljs-built_in">console</span>.log(<span class="hljs-string">"All done!"</span>);</span><br></pre></td></tr></table></figure>
 <p>上述的操作会使得output.txt内容被覆写，如果你只想在output.txt中追加内容，可以在定义写入流的时候追加参数:</p>
-<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> writeeStream = fs.createWriteStream(<span class="string">'output.txt'</span>,&#123;<span class="string">'flags'</span> : <span class="string">'a'</span> &#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-keyword">var</span> writeeStream = fs.createWriteStream(<span class="hljs-string">'output.txt'</span>,&#123;<span class="hljs-string">'flags'</span> : <span class="hljs-string">'a'</span> &#125;);</span><br></pre></td></tr></table></figure>
 <p>可用的参数列表如下：</p>
 <table>
 <thead>
@@ -325,291 +233,804 @@ var _hmt = _hmt || [];
 </tbody>
 </table>
 
-        
         </div>
-        <footer class="article-footer">
-            <div class="share-container">
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/Nodejs/">Nodejs</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
 
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        <div class="level-start">
+            <a class="level level-item has-link-grey  article-nav-prev" href="/基于Express框架的图片压缩上传/">
+                <i class="level-item fas fa-chevron-left"></i>
+                <span class="level-item">基于Express框架的图片压缩上传</span>
+            </a>
+        </div>
+        
+        
+    </div>
+</div>
 
 
 </div>
+                
 
-    <a data-url="http://yoursite.com/node.js传统读写流的时间先后问题/" data-id="cjm1fbmkl0001ovzz9nk7qk2z" class="article-share-link"><i class="fa fa-share"></i>Share</a>
-<script>
-    (function ($) {
-        // Prevent duplicate binding
-        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
-            __SHARE_BUTTON_BINDED__ = true;
-        } else {
-            return;
-        }
-        $('body').on('click', function() {
-            $('.article-share-box.on').removeClass('on');
-        }).on('click', '.article-share-link', function(e) {
-            e.stopPropagation();
 
-            var $this = $(this),
-                url = $this.attr('data-url'),
-                encodedUrl = encodeURIComponent(url),
-                id = 'article-share-box-' + $this.attr('data-id'),
-                offset = $this.offset(),
-                box;
 
-            if ($('#' + id).length) {
-                box = $('#' + id);
-
-                if (box.hasClass('on')){
-                    box.removeClass('on');
-                    return;
-                }
-            } else {
-                var html = [
-                    '<div id="' + id + '" class="article-share-box">',
-                        '<input class="article-share-input" value="' + url + '">',
-                        '<div class="article-share-links">',
-                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
-                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
-                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
-                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
-                        '</div>',
-                    '</div>'
-                ].join('');
-
-              box = $(html);
-
-              $('body').append(box);
-            }
-
-            $('.article-share-box.on').hide();
-
-            box.css({
-                top: offset.top + 25,
-                left: offset.left
-            }).addClass('on');
-
-        }).on('click', '.article-share-box', function (e) {
-            e.stopPropagation();
-        }).on('click', '.article-share-box-input', function () {
-            $(this).select();
-        }).on('click', '.article-share-box-link', function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-
-            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
-        });
-    })(jQuery);
-</script>
-
-            
-    
-
-        </footer>
-    </div>
+<div class="column is-4-tablet is-4-desktop is-3-widescreen  has-order-1 column-left">
     
         
-<nav id="article-nav">
-    
-        <a href="/基于Express框架的图片压缩上传/" id="article-nav-newer" class="article-nav-link-wrap">
-            <strong class="article-nav-caption">Newer</strong>
-            <div class="article-nav-title">
-                
-                    基于Express框架的图片压缩上传
-                
+<div class="card widget">
+    <div class="card-content">
+        <nav class="level">
+            <div class="level-item has-text-centered">
+                <div>
+                    <img class="image is-128x128 has-mb-6" style="border-radius:50%" src="/images/avatar.jpg" alt="Knight Zeng">
+                    
+                    <p class="is-size-4 is-block">
+                        Knight Zeng
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-block">
+                        大四老狗 &amp; Web前端开发
+                    </p>
+                    
+                    
+                    <p class="is-size-6 is-flex is-flex-center has-text-grey">
+                        <i class="fas fa-map-marker-alt has-mr-7"></i>
+                        <span>上海，中国</span>
+                    </p>
+                    
+                </div>
             </div>
-        </a>
-    
-    
-</nav>
-
-
-    
-</article>
-
-
-    
-    
-
-</section>
-            
-                
-<aside id="sidebar">
-   
+        </nav>
+        <nav class="level is-mobile">
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        文章
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        9
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        分类
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        1
+                    </p>
+                </div>
+            </div>
+            <div class="level-item has-text-centered is-marginless">
+                <div>
+                    <p class="heading">
+                        标签
+                    </p>
+                    <p class="title has-text-weight-normal">
+                        6
+                    </p>
+                </div>
+            </div>
+        </nav>
+        <div class="level">
+            <a class="level-item button is-link is-rounded" href="https://github.com/KingGanZeng">
+                关注我</a>
+        </div>
         
-    <div class="widget-wrap">
-        <h3 class="widget-title">最新更博</h3>
-        <div class="widget">
-            <ul id="recent-post" class="">
+        
+        <div class="level is-mobile">
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Github" href="https://github.com/KingGanZeng">
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/Go语言学习-安装篇/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/Go语言学习-安装篇/" class="title">Go语言学习-安装篇（Mac）</a></p>
-                            <p class="item-date"><time datetime="2018-11-20T10:30:30.000Z" itemprop="datePublished">2018-11-20</time></p>
-                        </div>
-                    </li>
+                <i class="fab fa-github"></i>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/差分分组密码的报告/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/差分分组密码的报告/" class="title"></a></p>
-                            <p class="item-date"><time datetime="2018-11-14T05:26:41.908Z" itemprop="datePublished">2018-11-14</time></p>
-                        </div>
-                    </li>
+            </a>
+            
+            <a class="level-item button is-white is-marginless" target="_blank"
+                title="Weibo" href="https://weibo.com/u/2852938435?refer_flag=1001030001_&amp;nick=Knight-Zeng">
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/Antlr4入门学习-安装配置/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/Antlr4入门学习-安装配置/" class="title">Antlr4入门学习-安装配置（Mac）</a></p>
-                            <p class="item-date"><time datetime="2018-11-10T03:03:22.000Z" itemprop="datePublished">2018-11-10</time></p>
-                        </div>
-                    </li>
+                <i class="fab fa-weibo"></i>
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/命令行tree命令生成文件树/" class="thumbnail">
+            </a>
+            
+        </div>
+        
+    </div>
+</div>
     
+        
     
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
+        
 
-                        </div>
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            链接
+        </h3>
+        <ul class="menu-list">
+        
+            <li>
+                <a class="level is-mobile" href="https://fex.baidu.com" target="_blank">
+                    <span class="level-left">
+                        <span class="level-item">百度Fex</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">https://fex.baidu.com</span>
+                    </span>
+                </a>
+            </li>
+        
+            <li>
+                <a class="level is-mobile" href="http://taobaofed.org" target="_blank">
+                    <span class="level-left">
+                        <span class="level-item">淘宝Fed</span>
+                    </span>
+                    <span class="level-right">
+                        <span class="level-item tag">http://taobaofed.org</span>
+                    </span>
+                </a>
+            </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+
+
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                分类
+            </h3>
+            <ul class="menu-list">
+            <li>
+        <a class="level is-marginless" href="/categories/Go/">
+            <span class="level-start">
+                <span class="level-item">Go</span>
+            </span>
+            <span class="level-end">
+                <span class="level-item tag">3</span>
+            </span>
+        </a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            标签云
+        </h3>
+        <a href="/tags/Antlr4/" style="font-size: 10px;">Antlr4</a> <a href="/tags/Koa/" style="font-size: 10px;">Koa</a> <a href="/tags/Learning/" style="font-size: 20px;">Learning</a> <a href="/tags/Nodejs/" style="font-size: 15px;">Nodejs</a> <a href="/tags/TIPS/" style="font-size: 10px;">TIPS</a> <a href="/tags/密码学/" style="font-size: 10px;">密码学</a>
+    </div>
+</div>
+
+    
+    
+        <div class="card card-transparent is-hidden-widescreen">
+        
+            
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/Go语言学习-后台篇/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/Go语言学习-后台篇/1.png" alt="Go语言学习(三)-后台篇(基于beego框架)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-21T08:36:30.000Z">2018-11-21</time></div>
+                    <a href="/Go语言学习-后台篇/" class="has-link-black-ter is-size-6">Go语言学习(三)-后台篇(基于beego框架)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Go/">Go</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/Go语言学习-框架篇/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/Go语言学习-框架篇/3.png" alt="Go语言学习(二)-框架篇">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-21T07:00:00.000Z">2018-11-21</time></div>
+                    <a href="/Go语言学习-框架篇/" class="has-link-black-ter is-size-6">Go语言学习(二)-框架篇</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Go/">Go</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/Go语言学习-安装篇/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/Go语言学习-安装篇/1.png" alt="Go语言学习(一)-安装篇（Mac）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-20T10:30:30.000Z">2018-11-20</time></div>
+                    <a href="/Go语言学习-安装篇/" class="has-link-black-ter is-size-6">Go语言学习(一)-安装篇（Mac）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Go/">Go</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/差分分组密码的报告/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="差分分组密码报告（未完成）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-15T07:00:00.000Z">2018-11-15</time></div>
+                    <a href="/差分分组密码的报告/" class="has-link-black-ter is-size-6">差分分组密码报告（未完成）</a>
+                    <p class="is-size-7 is-uppercase">
                         
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/命令行tree命令生成文件树/" class="title">命令行tree命令生成文件树</a></p>
-                            <p class="item-date"><time datetime="2018-05-15T02:37:21.000Z" itemprop="datePublished">2018-05-15</time></p>
-                        </div>
-                    </li>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/Antlr4入门学习-安装配置/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Antlr4入门学习-安装配置（Mac）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-10T03:03:22.000Z">2018-11-10</time></div>
+                    <a href="/Antlr4入门学习-安装配置/" class="has-link-black-ter is-size-6">Antlr4入门学习-安装配置（Mac）</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/11/">
+                <span class="level-start">
+                    <span class="level-item">十一月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+        
+            <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <ul class="menu-list">
                 
-                    <li>
-                        
-                        <div class="item-thumbnail">
-                            <a href="/Koa路由和静态资源中间件初探/" class="thumbnail">
-    
-    
-        <span class="thumbnail-image thumbnail-none"></span>
-    
-</a>
-
-                        </div>
-                        
-                        <div class="item-inner">
-                            <p class="item-category"></p>
-                            <p class="item-title"><a href="/Koa路由和静态资源中间件初探/" class="title">Koa路由和静态资源中间件初探</a></p>
-                            <p class="item-date"><time datetime="2018-05-10T09:27:51.000Z" itemprop="datePublished">2018-05-10</time></p>
-                        </div>
-                    </li>
+                <li>
+                    <a class="level is-marginless" href="/tags/Antlr4/">
+                        <span class="level-start">
+                            <span class="level-item">Antlr4</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Koa/">
+                        <span class="level-start">
+                            <span class="level-item">Koa</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Learning/">
+                        <span class="level-start">
+                            <span class="level-item">Learning</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">3</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Nodejs/">
+                        <span class="level-start">
+                            <span class="level-item">Nodejs</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">2</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/TIPS/">
+                        <span class="level-start">
+                            <span class="level-item">TIPS</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/密码学/">
+                        <span class="level-start">
+                            <span class="level-item">密码学</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
                 
             </ul>
         </div>
     </div>
-
-    
+</div>
         
-    
-        
-    <div class="widget-wrap">
-        <h3 class="widget-title">时间线</h3>
-        <div class="widget">
-            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/11/">November 2018</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/05/">May 2018</a><span class="archive-list-count">4</span></li></ul>
         </div>
-    </div>
-
     
-        
-    <div class="widget-wrap">
-        <h3 class="widget-title">标签</h3>
-        <div class="widget">
-            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Antlr4/">Antlr4</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Go/">Go</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Koa/">Koa</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Nodejs/">Nodejs</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/TIPS/">TIPS</a><span class="tag-list-count">1</span></li></ul>
-        </div>
-    </div>
+</div>
 
-    
-        
-    <div class="widget-wrap widget-list">
-        <h3 class="widget-title">友情链接</h3>
-        <div class="widget">
-            <ul>
                 
-                    <li>
-                        <a href="http://hexo.io">Hexo</a>
-                    </li>
+
+
+
+<div class="column is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only has-order-3 column-right">
+    
+        
+<div class="card widget">
+    <div class="card-content">
+        <h3 class="menu-label">
+            最新文章
+        </h3>
+        
+        <article class="media">
+            
+            <a href="/Go语言学习-后台篇/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/Go语言学习-后台篇/1.png" alt="Go语言学习(三)-后台篇(基于beego框架)">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-21T08:36:30.000Z">2018-11-21</time></div>
+                    <a href="/Go语言学习-后台篇/" class="has-link-black-ter is-size-6">Go语言学习(三)-后台篇(基于beego框架)</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Go/">Go</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/Go语言学习-框架篇/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/Go语言学习-框架篇/3.png" alt="Go语言学习(二)-框架篇">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-21T07:00:00.000Z">2018-11-21</time></div>
+                    <a href="/Go语言学习-框架篇/" class="has-link-black-ter is-size-6">Go语言学习(二)-框架篇</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Go/">Go</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/Go语言学习-安装篇/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/Go语言学习-安装篇/1.png" alt="Go语言学习(一)-安装篇（Mac）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-20T10:30:30.000Z">2018-11-20</time></div>
+                    <a href="/Go语言学习-安装篇/" class="has-link-black-ter is-size-6">Go语言学习(一)-安装篇（Mac）</a>
+                    <p class="is-size-7 is-uppercase">
+                        <a class="has-link-grey -link" href="/categories/Go/">Go</a>
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/差分分组密码的报告/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="差分分组密码报告（未完成）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-15T07:00:00.000Z">2018-11-15</time></div>
+                    <a href="/差分分组密码的报告/" class="has-link-black-ter is-size-6">差分分组密码报告（未完成）</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+        <article class="media">
+            
+            <a href="/Antlr4入门学习-安装配置/" class="media-left">
+                <p class="image is-64x64">
+                    <img class="thumbnail" src="/images/thumbnail.svg" alt="Antlr4入门学习-安装配置（Mac）">
+                </p>
+            </a>
+            
+            <div class="media-content">
+                <div class="content">
+                    <div><time class="has-text-grey is-size-7 is-uppercase" datetime="2018-11-10T03:03:22.000Z">2018-11-10</time></div>
+                    <a href="/Antlr4入门学习-安装配置/" class="has-link-black-ter is-size-6">Antlr4入门学习-安装配置（Mac）</a>
+                    <p class="is-size-7 is-uppercase">
+                        
+                    </p>
+                </div>
+            </div>
+        </article>
+        
+    </div>
+</div>
+
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+        <h3 class="menu-label">
+            归档
+        </h3>
+        <ul class="menu-list">
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/11/">
+                <span class="level-start">
+                    <span class="level-item">十一月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">5</span>
+                </span>
+            </a>
+        </li>
+        
+        <li>
+            <a class="level is-marginless" href="/archives/2018/05/">
+                <span class="level-start">
+                    <span class="level-item">五月 2018</span>
+                </span>
+                <span class="level-end">
+                    <span class="level-item tag">4</span>
+                </span>
+            </a>
+        </li>
+        
+        </ul>
+        </div>
+    </div>
+</div>
+    
+        <div class="card widget">
+    <div class="card-content">
+        <div class="menu">
+            <h3 class="menu-label">
+                标签
+            </h3>
+            <ul class="menu-list">
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Antlr4/">
+                        <span class="level-start">
+                            <span class="level-item">Antlr4</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Koa/">
+                        <span class="level-start">
+                            <span class="level-item">Koa</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Learning/">
+                        <span class="level-start">
+                            <span class="level-item">Learning</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">3</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/Nodejs/">
+                        <span class="level-start">
+                            <span class="level-item">Nodejs</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">2</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/TIPS/">
+                        <span class="level-start">
+                            <span class="level-item">TIPS</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
+                
+                <li>
+                    <a class="level is-marginless" href="/tags/密码学/">
+                        <span class="level-start">
+                            <span class="level-item">密码学</span>
+                        </span>
+                        <span class="level-end">
+                            <span class="level-item tag">1</span>
+                        </span>
+                    </a>
+                </li>
                 
             </ul>
         </div>
     </div>
-
-
+</div>
     
-    <div id="toTop" class="fa fa-angle-up"></div>
-</aside>
+    
+</div>
 
-            
+            </div>
         </div>
-        <footer id="footer">
-    <div class="outer">
-        <div id="footer-info" class="inner">
-            &copy; 2018 Knight Zeng<br>
-            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+    </section>
+    <footer class="footer">
+    <div class="container">
+        <div class="level">
+            <div class="level-start has-text-centered-mobile">
+                <a class="footer-logo is-block has-mb-6" href="/">
+                
+                    <img src="/images/logo.png" alt="node.js非管道方法读写错误问题" height="28">
+                
+                </a>
+                <p class="is-size-7">
+                &copy; 2018 Knight Zeng&nbsp;
+                Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a
+                        href="http://github.com/ppoffice/hexo-theme-icarus">Icarus</a>
+                </p>
+            </div>
+            <div class="level-end">
+            
+                <div class="field has-addons is-flex-center-mobile has-mt-5-mobile is-flex-wrap is-flex-middle">
+                
+                
+                <p class="control">
+                    <a class="button is-white is-large" target="_blank" title="Follow me on GitHub" href="https://github.com/KingGanZeng">
+                        
+                        <i class="fab fa-github"></i>
+                        
+                    </a>
+                </p>
+                
+                </div>
+            
+            </div>
         </div>
     </div>
 </footer>
-        
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script>
+<script>moment.locale("zh-CN");</script>
 
 
     
-        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
-        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+    <script src="/js/animation.js"></script>
+    
+
+    
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script>
+    <script src="/js/gallery.js" defer></script>
+    
+
+    
+    
+
+<div id="outdated">
+    <h6>Your browser is out-of-date!</h6>
+    <p>Update your browser to view this website correctly. <a id="btnUpdateBrowser" href="http://outdatedbrowser.com/">Update
+            my browser now </a></p>
+    <p class="last"><a href="#" id="btnCloseUpdateBrowser" title="Close">&times;</a></p>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/outdatedbrowser@1.1.5/outdatedbrowser/outdatedbrowser.min.js" defer></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        outdatedBrowser({
+            bgColor: '#f25648',
+            color: '#ffffff',
+            lowerThan: 'flex'
+        });
+    });
+</script>
+
+
+    
+    
+<script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    MathJax.Hub.Config({
+        'HTML-CSS': {matchFontHeight: false},
+        SVG: {matchFontHeight: false},
+        CommonHTML: {matchFontHeight: false}
+    });
+});
+</script>
+
+    
+    
+
+<a id="back-to-top" title="回到顶端" href="javascript:;">
+    <i class="fas fa-chevron-up"></i>
+</a>
+<script src="/js/back-to-top.js" defer></script>
+
+
+    
+    
+
+    
+    
+    
+    
+
     
     
     
 
 
+<script src="/js/main.js" defer></script>
 
-<!-- Custom Scripts -->
-<script src="/js/main.js"></script>
-
+    
+    <div class="searchbox ins-search">
+    <div class="searchbox-container ins-search-container">
+        <div class="searchbox-input-wrapper">
+            <input type="text" class="searchbox-input ins-search-input" placeholder="想要查找什么..." />
+            <span class="searchbox-close ins-close ins-selectable"><i class="fa fa-times-circle"></i></span>
+        </div>
+        <div class="searchbox-result-wrapper ins-section-wrapper">
+            <div class="ins-section-container"></div>
+        </div>
     </div>
+</div>
+<script>
+    (function (window) {
+        var INSIGHT_CONFIG = {
+            TRANSLATION: {
+                POSTS: '文章',
+                PAGES: '页面',
+                CATEGORIES: '分类',
+                TAGS: '标签',
+                UNTITLED: '(无标题)',
+            },
+            CONTENT_URL: '/content.json',
+        };
+        window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+    })(window);
+</script>
+<script src="/js/insight.js" defer></script>
+<link rel="stylesheet" href="/css/search.css">
+<link rel="stylesheet" href="/css/insight.css">
+    
 </body>
+</html>
