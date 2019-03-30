@@ -2,27 +2,34 @@
 <html  lang="zh">
 <head>
     <meta charset="utf-8">
-<title>命令行tree命令生成文件树 - KingGanZeng`s blogs</title>
+<title>如何在EC2上部署webpack打包项目 - KingGanZeng`s blogs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 
 
-    <meta name="description" content="为了方便查看文件内容以及相关目录，我们一般用文件树进行操作，在windows系统下，我们可以直接使用tree命令进行操作： 1tree &amp;gt; list.txt">
-<meta name="keywords" content="小技巧">
+    <meta name="description" content="本篇主要包含以下几部分：  EC2的申请与配置注意 ubuntu服务器相关配置 nginx的配置及域名访问">
+<meta name="keywords" content="项目实战">
 <meta property="og:type" content="article">
-<meta property="og:title" content="命令行tree命令生成文件树">
-<meta property="og:url" content="http://yoursite.com/命令行tree命令生成文件树/index.html">
+<meta property="og:title" content="如何在EC2上部署webpack打包项目">
+<meta property="og:url" content="http://yoursite.com/如何在EC2上部署webpack打包项目/index.html">
 <meta property="og:site_name" content="KingGanZeng`s blogs">
-<meta property="og:description" content="为了方便查看文件内容以及相关目录，我们一般用文件树进行操作，在windows系统下，我们可以直接使用tree命令进行操作： 1tree &amp;gt; list.txt">
+<meta property="og:description" content="本篇主要包含以下几部分：  EC2的申请与配置注意 ubuntu服务器相关配置 nginx的配置及域名访问">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:image" content="http://yoursite.com/命令行tree命令生成文件树/1.png">
-<meta property="og:image" content="http://yoursite.com/命令行tree命令生成文件树/2.png">
-<meta property="og:image" content="http://yoursite.com/命令行tree命令生成文件树/4.png">
-<meta property="og:updated_time" content="2018-11-22T11:46:39.496Z">
+<meta property="og:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/1.png">
+<meta property="og:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/2.png">
+<meta property="og:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/3.png">
+<meta property="og:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/4.png">
+<meta property="og:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/5.png">
+<meta property="og:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/6.png">
+<meta property="og:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/7.png">
+<meta property="og:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/8.png">
+<meta property="og:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/9.png">
+<meta property="og:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/10.png">
+<meta property="og:updated_time" content="2019-03-30T16:25:41.568Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="命令行tree命令生成文件树">
-<meta name="twitter:description" content="为了方便查看文件内容以及相关目录，我们一般用文件树进行操作，在windows系统下，我们可以直接使用tree命令进行操作： 1tree &amp;gt; list.txt">
-<meta name="twitter:image" content="http://yoursite.com/命令行tree命令生成文件树/1.png">
+<meta name="twitter:title" content="如何在EC2上部署webpack打包项目">
+<meta name="twitter:description" content="本篇主要包含以下几部分：  EC2的申请与配置注意 ubuntu服务器相关配置 nginx的配置及域名访问">
+<meta name="twitter:image" content="http://yoursite.com/如何在EC2上部署webpack打包项目/1.png">
 
 
 
@@ -88,7 +95,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="命令行tree命令生成文件树" height="36">
+                <img src="/images/logo.png" alt="如何在EC2上部署webpack打包项目" height="36">
             
             </a>
         </div>
@@ -140,21 +147,27 @@
             <div class="columns">
                 <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
     
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/如何在EC2上部署webpack打包项目/thumb.png" alt="如何在EC2上部署webpack打包项目">
+        </span>
+    </div>
+    
     <div class="card-content article ">
         
         <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
             <div class="level-left">
-                <time class="level-item has-text-grey" datetime="2018-05-15T02:37:21.000Z">2018-05-15</time>
+                <time class="level-item has-text-grey" datetime="2019-03-30T08:59:30.000Z">2019-03-30</time>
                 
                 <div class="level-item">
-                <a class="has-link-grey -link" href="/categories/Bash-cmd/">Bash/cmd</a>
+                <a class="has-link-grey -link" href="/categories/Node/">Node</a>
                 </div>
                 
                 
                 <span class="level-item has-text-grey">
                     
                     
-                    3 分钟 读完 (大约 386 个字)
+                    9 分钟 读完 (大约 1284 个字)
                 </span>
                 
             </div>
@@ -162,51 +175,70 @@
         
         <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
             
-                命令行tree命令生成文件树
+                如何在EC2上部署webpack打包项目
             
         </h1>
         <div class="content">
-            <p>为了方便查看文件内容以及相关目录，我们一般用文件树进行操作，在windows系统下，我们可以直接使用tree命令进行操作：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree &gt; list.txt</span><br></pre></td></tr></table></figure>
+            <p>本篇主要包含以下几部分：</p>
+<ol>
+<li>EC2的申请与配置注意</li>
+<li>ubuntu服务器相关配置</li>
+<li>nginx的配置及域名访问</li>
+</ol>
 <a id="more"></a>
-<p>实例图片如下：</p>
-<p><img src="/命令行tree命令生成文件树/1.png" alt="例图1"></p>
-<p>这样我们可以生成koa-learn这个文件夹下的所有文件目录，输出结果为：</p>
-<p><img src="/命令行tree命令生成文件树/2.png" alt="例图2"></p>
-<p>那么对于Mac OS或者Linux系统，可以通过以下命令安装tree这个生成插件，打开终端并输入：（没有安装brew请先输入brew install）</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install tree</span><br></pre></td></tr></table></figure>
-<p>然后等待安装完毕，因为是国外的服务器，所以下载可能比较慢。</p>
-<p>然后进入到文件夹下，在命令行输入：</p>
-<figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tree -a</span><br></pre></td></tr></table></figure>
-<p>接着我们可以在终端看到当前的目录树：<img src="/命令行tree命令生成文件树/4.png" alt="例图3"></p>
-<p>除此之外我们还有其他的参数可以设置：</p>
-<table>
-<thead>
-<tr>
-<th>命令行</th>
-<th>效果</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>tree -d</td>
-<td>只显示文件夹</td>
-</tr>
-<tr>
-<td>tree -D</td>
-<td>显示文件的最后修改时间</td>
-</tr>
-<tr>
-<td>tree -L n</td>
-<td>n表示显示项目的层级，n=3即只显示项目的三层结构</td>
-</tr>
-<tr>
-<td>tree -I pattern</td>
-<td>pattern表示想要过滤的目录，例如 tree -I “node_modules”可以过滤掉node_modules这个文件夹</td>
-</tr>
-</tbody>
-</table>
-<p>注意，这里的参数-d、-D区分大小写，大家可以自行实验。</p>
+<p>快速访问：</p>
+<p>[TOC]</p>
+<p>项目的整体配置及版本：</p>
+<ul>
+<li>服务器类型：AWS EC2服务器</li>
+<li>服务器系统：Ubuntu 18.04</li>
+<li>nvm版本：0.33.2</li>
+<li>node版本：11.13.0</li>
+<li>npm版本：6.7.0</li>
+<li>vue版本：2.9.6</li>
+<li>nginx版本：1.14.0 (Ubuntu)</li>
+<li>git版本：2.21.0</li>
+</ul>
+<h4 id="EC2的申请与配置注意"><a href="#EC2的申请与配置注意" class="headerlink" title="EC2的申请与配置注意"></a>EC2的申请与配置注意</h4><p>首先你必须有一个亚马逊账户，进入AWS的控制面板，通过服务/计算/EC2进入到下一层的控制面板中，然后点选启动实例，选择服务器的相关配置等等。</p>
+<p><img src="/如何在EC2上部署webpack打包项目/1.png" alt="EC2创建"></p>
+<p>在这一些操作后，你需要新建一个安全组来允许你从远程访问。关于安全组的配置，可以参考下图：</p>
+<p><img src="/如何在EC2上部署webpack打包项目/2.png" alt="安全组入站规则"></p>
+<p>80端口和8080端口开发用于让我们通过域名或IP地址访问我们的站点，22端口用于我们通过SSH来链接远程服务器，进行相关的配置。</p>
+<p><img src="/如何在EC2上部署webpack打包项目/3.png" alt="安全组出站规则"></p>
+<p>出站规则设置成全部端口，任意IP均可访问即可。</p>
+<p>全部完成后，就可以在实例中看到我们部署好的服务器，类似第一张图，点击我们刚部署好的服务器，可以看到服务器的ip地址（红框内容），用户可以通过ip来进行访问，也用于我们最后要配置的域名解析：</p>
+<p><img src="/如何在EC2上部署webpack打包项目/4.png" alt="服务器信息"></p>
+<p>再点击“连接”按钮，会给我们连接所需的相关信息：</p>
+<p><img src="/如何在EC2上部署webpack打包项目/5.png" alt="连接远程服务器"></p>
+<p>其中 <strong>公有DNS</strong> 便是我们连接的主机，默认端口号为22，接下来可以使用合适的SSH客户端来链接远程主机。</p>
+<ul>
+<li>Mac：<a href="http://www.hostbuf.com/" target="_blank" rel="noopener">FinalShell</a></li>
+<li>Windows：<a href="https://xshell.en.softonic.com/" target="_blank" rel="noopener">Xshell</a></li>
+</ul>
+<p>接下来以FinalShell为例，我们来链接远程服务器：</p>
+<p><img src="/如何在EC2上部署webpack打包项目/6.png" alt="FinalShell"></p>
+<p>然后点击文件夹，选择ssh链接：</p>
+<p><img src="/如何在EC2上部署webpack打包项目/7.png" alt="FinalShell使用"></p>
+<p>然后填写链接相关信息：</p>
+<p><img src="/如何在EC2上部署webpack打包项目/8.png" alt="链接信息填写"></p>
+<p>名称随意，主机即为刚才的 <strong>公有DNS</strong> 认证方式选择公钥认证，用户名填写 <strong>ubuntu</strong> ，私钥即为刚才创建实例所保存的 <strong>.pem</strong> 文件，全部填写完毕后点击确定，即可链接远程服务器。</p>
+<h4 id="ubuntu服务器相关配置"><a href="#ubuntu服务器相关配置" class="headerlink" title="ubuntu服务器相关配置"></a>ubuntu服务器相关配置</h4><figure class="highlight bash hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">~$: sudo apt install curl</span><br><span class="line">~$: curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash</span><br><span class="line">(执行完这一步后需要重启shell，直接把当前shell关闭再重新进入就好了，否则nvm命令无法找到)</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">~$: nvm --version // 查看nvm版本</span><br><span class="line">~$: nvm ls-remote // 查看node版本</span><br><span class="line">~$: nvm install v11.13.0 // 下载指定node版本</span><br><span class="line">~$: node --version</span><br><span class="line">~$: npm --version </span><br><span class="line">(node相关配置完毕)</span><br><span class="line">~$: npm install -g vue-cli</span><br><span class="line">(vue相关配置完毕)</span><br><span class="line">~$: sudo add-apt-repository ppa:git-core/ppa</span><br><span class="line">~$: sudo apt-get update</span><br><span class="line">~$: sudo apt-get install git</span><br><span class="line">(git相关配置完毕)</span><br><span class="line">~$: sudo apt-get install nginx</span><br><span class="line">(nginx安装完毕)</span><br></pre></td></tr></table></figure>
+<p>接下来我们需要把项目clone到服务器上，可以借助github来完成这一步，当然有兴趣的同学可以使用webstorm的deployment来完成这一步。</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">~$: git clone https://github.com/[xxxx]/[projectName].git</span><br><span class="line">~/[projectName]$: cd [projectName] &amp;&amp; npm install</span><br><span class="line">~/[projectName]$: npm run build</span><br></pre></td></tr></table></figure>
+<p>上述操作完成后，我们的项目已经完成了打包并存放在我们的服务器上了，这是其实可以通过 <code>run dev</code> 然后使用共有 ip + 端口号访问了，接下来我们将使用nginx实现域名的访问。</p>
+<h4 id="nginx的配置及域名访问"><a href="#nginx的配置及域名访问" class="headerlink" title="nginx的配置及域名访问"></a>nginx的配置及域名访问</h4><p>首先我们准备好域名，去阿里云或者腾讯云上搞一个域名，全部审批完后，点击域名解析：</p>
+<p><img src="/如何在EC2上部署webpack打包项目/9.png" alt="阿里云域名管理"></p>
+<p>然后点击新手引导来添加服务器的ip地址（之前我们保存的服务器公有IP），保存确认即可：</p>
+<p><img src="/如何在EC2上部署webpack打包项目/10.png" alt="DNS解析"></p>
+<p>搞定好这个之后，我们回到SSH上完成nginx代理。之前我们已经安装好了nginx，接下来进行nginx的配置：</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~$: cd /etc/nginx</span><br><span class="line">/etc/nginx$: sudo vim nginx.conf</span><br></pre></td></tr></table></figure>
+<p>然后修改相关配置：</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">http &#123;</span><br><span class="line">    ...</span><br><span class="line">     server &#123;</span><br><span class="line">                listen          80;</span><br><span class="line">                server_name     xxx.cn;</span><br><span class="line"></span><br><span class="line">                location / &#123;</span><br><span class="line">                        root    /home/ubuntu/[projectName]/dist;</span><br><span class="line">                        index   index.html;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后按下esc，输入 <code>:wq</code> 保存退出，</p>
+<p>接着在终端中重启nginx：</p>
+<figure class="highlight shell hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/etc/nginx$: sudo service nginx restart</span><br></pre></td></tr></table></figure>
+<p>这样我们服务器端就全部配置完成了，可以愉快的通过域名来访问了。</p>
 
         </div>
         
@@ -214,7 +246,7 @@
             <div class="level-start">
                 <div class="level-item">
                     <span class="is-size-6 has-text-grey has-mr-7">#</span>
-                    <a class="has-link-grey -link" href="/tags/小技巧/">小技巧</a>
+                    <a class="has-link-grey -link" href="/tags/项目实战/">项目实战</a>
                 </div>
             </div>
         </div>
@@ -228,17 +260,10 @@
 <div class="card card-transparent">
     <div class="level post-navigation is-flex-wrap is-mobile">
         
-        <div class="level-start">
-            <a class="level level-item has-link-grey  article-nav-prev" href="/Antlr4入门学习-安装配置/">
-                <i class="level-item fas fa-chevron-left"></i>
-                <span class="level-item">Antlr4入门学习-安装配置（Mac）</span>
-            </a>
-        </div>
-        
         
         <div class="level-end">
-            <a class="level level-item has-link-grey  article-nav-next" href="/Koa路由和静态资源中间件初探/">
-                <span class="level-item">Koa路由和静态资源中间件初探</span>
+            <a class="level level-item has-link-grey  article-nav-next" href="/Django Rest Framework调试之坑/">
+                <span class="level-item">Django Rest Framework调试之坑</span>
                 <i class="level-item fas fa-chevron-right"></i>
             </a>
         </div>
@@ -942,7 +967,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.png" alt="命令行tree命令生成文件树" height="28">
+                    <img src="/images/logo.png" alt="如何在EC2上部署webpack打包项目" height="28">
                 
                 </a>
                 <p class="is-size-7">
