@@ -2,18 +2,23 @@
 <html  lang="zh">
 <head>
     <meta charset="utf-8">
-<title>归档: 2019 - KingGanZeng`s blogs</title>
+<title>解决vue watch中removeEventListener()不生效的问题 - KingGanZeng`s blogs</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
 
 
 
-    <meta property="og:type" content="website">
-<meta property="og:title" content="KingGanZeng`s blogs">
-<meta property="og:url" content="http://yoursite.com/archives/2019/index.html">
+    <meta name="description" content="最近在做vue项目，遇到了一个事件绑定的小问题，当我watch某一个data值的变化时，需要对某一个节点绑定事件（先解绑再绑定，防止重复绑定），可以来看下代码：">
+<meta name="keywords" content="错误总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决vue watch中removeEventListener()不生效的问题">
+<meta property="og:url" content="http://yoursite.com/addEventListener()与removeEventListener()/index.html">
 <meta property="og:site_name" content="KingGanZeng`s blogs">
+<meta property="og:description" content="最近在做vue项目，遇到了一个事件绑定的小问题，当我watch某一个data值的变化时，需要对某一个节点绑定事件（先解绑再绑定，防止重复绑定），可以来看下代码：">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-28T03:16:18.322Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="KingGanZeng`s blogs">
+<meta name="twitter:title" content="解决vue watch中removeEventListener()不生效的问题">
+<meta name="twitter:description" content="最近在做vue项目，遇到了一个事件绑定的小问题，当我watch某一个data值的变化时，需要对某一个节点绑定事件（先解绑再绑定，防止重复绑定），可以来看下代码：">
 
 
 
@@ -79,7 +84,7 @@
         <div class="navbar-brand is-flex-center">
             <a class="navbar-item navbar-logo" href="/">
             
-                <img src="/images/logo.png" alt="KingGanZeng`s blogs" height="36">
+                <img src="/images/logo.png" alt="解决vue watch中removeEventListener()不生效的问题" height="36">
             
             </a>
         </div>
@@ -129,104 +134,105 @@
     <section class="section">
         <div class="container">
             <div class="columns">
-                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main">
-
-<div class="card widget">
-    <div class="card-content">
-        <h3 class="tag is-link">
-        2019
-        </h3>
-        <div class="timeline">
+                <div class="column is-8-tablet is-8-desktop is-6-widescreen has-order-2 column-main"><div class="card">
+    
+    <div class="card-image">
+        <span  class="image is-7by1">
+            <img class="thumbnail" src="/addEventListener()与removeEventListener()/thumb.gif" alt="解决vue watch中removeEventListener()不生效的问题">
+        </span>
+    </div>
+    
+    <div class="card-content article ">
         
-            <article class="media">
+        <div class="level article-meta is-size-7 is-uppercase is-mobile is-overflow-x-auto">
+            <div class="level-left">
+                <time class="level-item has-text-grey" datetime="2019-06-27T02:24:03.117Z">2019-06-27</time>
                 
-                <a href="/addEventListener()与removeEventListener()/" class="media-left">
-                    <p class="image is-64x64">
-                        <img class="thumbnail" src="/addEventListener()与removeEventListener()/thumb.gif" alt="解决vue watch中removeEventListener()不生效的问题">
-                    </p>
-                </a>
-                
-                <div class="media-content">
-                    <div class="content">
-                        <time class="has-text-grey is-size-7 is-block is-uppercase" datetime="2019-06-27T02:24:03.117Z">2019-06-27</time>
-                        <a href="/addEventListener()与removeEventListener()/" class="has-link-black-ter is-size-6">解决vue watch中removeEventListener()不生效的问题</a>
-                        <div class="level article-meta is-mobile">
-                            <div class="level-left">
-                                
-                                <div class="level-item is-size-7 is-uppercase">
-                                <a class="has-link-grey -link" href="/categories/JS/">JS</a>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
+                <div class="level-item">
+                <a class="has-link-grey -link" href="/categories/JS/">JS</a>
                 </div>
-            </article>
-        
-            <article class="media">
                 
-                <a href="/如何在EC2上部署webpack打包项目/" class="media-left">
-                    <p class="image is-64x64">
-                        <img class="thumbnail" src="/如何在EC2上部署webpack打包项目/thumb.jpg" alt="如何在EC2上部署webpack打包项目">
-                    </p>
-                </a>
                 
-                <div class="media-content">
-                    <div class="content">
-                        <time class="has-text-grey is-size-7 is-block is-uppercase" datetime="2019-03-30T08:59:30.000Z">2019-03-30</time>
-                        <a href="/如何在EC2上部署webpack打包项目/" class="has-link-black-ter is-size-6">如何在EC2上部署webpack打包项目</a>
-                        <div class="level article-meta is-mobile">
-                            <div class="level-left">
-                                
-                                <div class="level-item is-size-7 is-uppercase">
-                                <a class="has-link-grey -link" href="/categories/Node/">Node</a>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        
-            <article class="media">
+                <span class="level-item has-text-grey">
+                    
+                    
+                    4 分钟 读完 (大约 563 个字)
+                </span>
                 
-                <div class="media-content">
-                    <div class="content">
-                        <time class="has-text-grey is-size-7 is-block is-uppercase" datetime="2019-03-19T15:11:30.000Z">2019-03-19</time>
-                        <a href="/Django Rest Framework调试之坑/" class="has-link-black-ter is-size-6">Django Rest Framework调试之坑</a>
-                        <div class="level article-meta is-mobile">
-                            <div class="level-left">
-                                
-                                <div class="level-item is-size-7 is-uppercase">
-                                <a class="has-link-grey -link" href="/categories/Python/">Python</a>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        
-            <article class="media">
-                
-                <div class="media-content">
-                    <div class="content">
-                        <time class="has-text-grey is-size-7 is-block is-uppercase" datetime="2019-02-04T03:38:05.000Z">2019-02-04</time>
-                        <a href="/如何利用taro搭建微信小程序/" class="has-link-black-ter is-size-6">如何利用taro搭建微信小程序</a>
-                        <div class="level article-meta is-mobile">
-                            <div class="level-left">
-                                
-                                <div class="level-item is-size-7 is-uppercase">
-                                <a class="has-link-grey -link" href="/categories/微信小程序/">微信小程序</a>
-                                </div>
-                                
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-        
+            </div>
         </div>
+        
+        <h1 class="title is-size-3 is-size-4-mobile has-text-weight-normal">
+            
+                解决vue watch中removeEventListener()不生效的问题
+            
+        </h1>
+        <div class="content">
+            <p>最近在做vue项目，遇到了一个事件绑定的小问题，当我watch某一个data值的变化时，需要对某一个节点绑定事件（先解绑再绑定，防止重复绑定），可以来看下代码：</p>
+<a id="more"></a>
+<figure class="highlight javascript hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">data() &#123;</span><br><span class="line">  <span class="hljs-keyword">return</span> &#123;</span><br><span class="line">    quickSelect: <span class="hljs-string">''</span>,</span><br><span class="line">    inputValue: <span class="hljs-string">''</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br><span class="line">watch: &#123;</span><br><span class="line">  inputValue: &#123;</span><br><span class="line">    handler() &#123;</span><br><span class="line">      <span class="hljs-keyword">const</span> datePickerPanel = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">'.date-picker__panel'</span>)</span><br><span class="line">      <span class="hljs-keyword">const</span> _this = <span class="hljs-keyword">this</span> <span class="hljs-comment">// 闭包取不到vue实例，所以要在这里重新定义</span></span><br><span class="line">      <span class="hljs-keyword">const</span> clearQuickSelect = <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;</span><br><span class="line">        <span class="hljs-built_in">console</span>.log(<span class="hljs-number">1111</span>)</span><br><span class="line">        _this.quickSelect = <span class="hljs-string">''</span></span><br><span class="line">      &#125;</span><br><span class="line">      <span class="hljs-comment">// 防止重复监听，先移除之前的</span></span><br><span class="line">      datePickerPanel.removeEventListener(<span class="hljs-string">'click'</span>, clearQuickSelect, <span class="hljs-literal">false</span>)</span><br><span class="line">      datePickerPanel.addEventListener(<span class="hljs-string">'click'</span>, clearQuickSelect, <span class="hljs-literal">false</span>)</span><br><span class="line">      <span class="hljs-comment">// 触发panel刷新函数</span></span><br><span class="line">      <span class="hljs-keyword">this</span>.refreshPanel()</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br><span class="line">methods: &#123;</span><br><span class="line">  refreshPanel() &#123;</span><br><span class="line">  ...</span><br><span class="line">    <span class="hljs-keyword">this</span>.quickSelect = <span class="hljs-string">'xxx'</span></span><br><span class="line">  ...</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<p>我在watch中去声明了一个clearQuickSelect函数，重置quickSelect这个属性，乍一看add和remove的参数完全一致，在实际操作中发现remove并没有生效，原因是啥呢，我还傻乎乎的用箭头函数试了一下，依然还是无法remove。</p>
+<p>其实主要问题在于，每次触发watch，都会生成一个新的<code>clearQuickSelect</code>函数，即便名字一样，它所存放的地址也发生了变化，实际上每次remove的<code>clearQuickSelect</code>都是一个新的函数，简单来说，就是生成了<code>clearQuickSelect1() clearQuickSelect2() clearQuickSelect3()</code>，导致解绑不到之前定义的函数。</p>
+<p>一个解决办法就是将<code>clearQuickSelect</code>放在methods里，这样一解决了上面的问题，二也不需要考虑闭包取不到正确的<code>this</code>的问题。</p>
+<p>说道这里不如来回顾一下从原生到jquery再到目前主流框架的事件绑定方法吧</p>
+<table>
+<thead>
+<tr>
+<th>框架</th>
+<th style="text-align:left">事件</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>原生js</td>
+<td style="text-align:left">addEventListener(<em>event</em>, <em>function</em>, <em>useCapture</em>), removeEventListener(<em>event</em>, <em>function</em>, <em>useCapture</em>)</td>
+</tr>
+<tr>
+<td>jquery</td>
+<td style="text-align:left">$(<em>domSelector</em>).on(<em>event</em>, <em>childSelector</em>, <em>data</em>, <em>function</em>), $(<em>domSelector</em>).off(‘click’)</td>
+</tr>
+<tr>
+<td>vue</td>
+<td style="text-align:left">在dom上绑定@click=”func()”或使用原生</td>
+</tr>
+<tr>
+<td>react</td>
+<td style="text-align:left">在dom上绑定onClick=”func()”或使用原生</td>
+</tr>
+</tbody>
+</table>
+<p>PS: 原生事件中useCapture为true则表示在捕获阶段触发，否则为冒泡。默认为事件冒泡。</p>
+<p>最近面试也被问到了一个问题，如何使用原生事件实现jquery的on，简单想了一种写法：</p>
+<figure class="highlight html hljs"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"father"</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"child"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="line">	<span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"child"</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></span><br><span class="line"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="hljs-undefined"></span></span><br><span class="line"><span class="hljs-javascript">  <span class="hljs-comment">// jquery的写法</span></span></span><br><span class="line"><span class="hljs-javascript">	$(<span class="hljs-string">'#father'</span>).on(<span class="hljs-string">'click'</span>, <span class="hljs-string">'.child'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params"></span>) </span>&#123;<span class="hljs-built_in">console</span>.log(<span class="hljs-number">111111</span>)&#125; )</span></span><br><span class="line"><span class="hljs-javascript">  <span class="hljs-comment">// 用原生实现</span></span></span><br><span class="line"><span class="hljs-javascript">	<span class="hljs-keyword">const</span> father = <span class="hljs-built_in">document</span>.getElementById(<span class="hljs-string">'father'</span>)</span></span><br><span class="line"><span class="hljs-javascript">  father.addEventListener(<span class="hljs-string">'click'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">e</span>) </span>&#123;</span></span><br><span class="line"><span class="hljs-javascript">    <span class="hljs-keyword">if</span> (e &amp;&amp; e.target.className = <span class="hljs-string">'child'</span>) &#123;</span></span><br><span class="line"><span class="hljs-javascript">      <span class="hljs-built_in">console</span>.log(<span class="hljs-number">222222</span>)</span></span><br><span class="line"><span class="hljs-undefined">    &#125;</span></span><br><span class="line"><span class="hljs-undefined">  &#125;)</span></span><br><span class="line"><span class="hljs-undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+        <div class="level is-size-7 is-uppercase">
+            <div class="level-start">
+                <div class="level-item">
+                    <span class="is-size-6 has-text-grey has-mr-7">#</span>
+                    <a class="has-link-grey -link" href="/tags/错误总结/">错误总结</a>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+    </div>
+</div>
+
+
+<div class="card card-transparent">
+    <div class="level post-navigation is-flex-wrap is-mobile">
+        
+        
+        <div class="level-end">
+            <a class="level level-item has-link-grey  article-nav-next" href="/如何在EC2上部署webpack打包项目/">
+                <span class="level-item">如何在EC2上部署webpack打包项目</span>
+                <i class="level-item fas fa-chevron-right"></i>
+            </a>
+        </div>
+        
     </div>
 </div>
 
@@ -948,7 +954,7 @@
             <div class="level-start has-text-centered-mobile">
                 <a class="footer-logo is-block has-mb-6" href="/">
                 
-                    <img src="/images/logo.png" alt="KingGanZeng`s blogs" height="28">
+                    <img src="/images/logo.png" alt="解决vue watch中removeEventListener()不生效的问题" height="28">
                 
                 </a>
                 <p class="is-size-7">
